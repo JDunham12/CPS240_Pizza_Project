@@ -3,8 +3,6 @@ public class Employee extends Person {
 
 	private String employeeID;
 	private String position; // Arraylist of positions?
-	private double wage;
-	private double yearToDateHours;
 	private boolean isFullTime;
 
 	// Default constructor
