@@ -1,6 +1,9 @@
 //test
-public class main{
+public class Main{
 	public static void main(String[] args) {
-		system.out.println("Hello World!");
+		
+		//Customer cust = new Customer();
+		//System.out.println(cust);
+		//System.out.println("Hello World!");
 	}
 }
