@@ -1,6 +1,7 @@
+import java.util.Comparator;
 import java.util.List;
 
-public class Pizza {
+public class Pizza implements Comparable<Pizza>{
 
 	private double price;
 	private int size;
@@ -9,6 +10,7 @@ public class Pizza {
 	private String sauce;
 	private String cheese;
 	private List<String> toppings;
+	//Pizza code???
 
 	// Default Constructor
 	public Pizza() {
@@ -38,6 +40,12 @@ public class Pizza {
 	public String getPizzaName() {
 		return this.name;
 	}
+	
+	@Override
+	public int compareTo(Pizza o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@Override
 	public String toString() {
@@ -45,3 +53,4 @@ public class Pizza {
 				+ ", Sauce= " + this.sauce + ", Cheese= " + this.cheese + ", Toppings= " + this.toppings;
 	}
 }
+
