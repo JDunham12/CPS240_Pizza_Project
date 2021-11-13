@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Pizza implements Comparable<Pizza>{
+public class Pizza implements Comparable<Pizza> {
 
 	private double price;
 	private int size;
@@ -10,11 +11,22 @@ public class Pizza implements Comparable<Pizza>{
 	private String sauce;
 	private String cheese;
 	private List<String> toppings;
-	//Pizza code???
+	// Pizza code???
 
 	// Default Constructor
 	public Pizza() {
 
+	}
+
+	// Constructor w/ all parameters except toping list
+	public Pizza(String name, int size, double price, String crust, String sauce, String cheese) {
+		this.name = name;
+		this.size = size;
+		this.price = price;
+		this.crust = crust;
+		this.sauce = sauce;
+		this.cheese = cheese;
+		this.toppings = new ArrayList<String>();
 	}
 
 	// Constructor w/ Parameters
@@ -40,7 +52,7 @@ public class Pizza implements Comparable<Pizza>{
 	public String getPizzaName() {
 		return this.name;
 	}
-	
+
 	@Override
 	public int compareTo(Pizza o) {
 		// TODO Auto-generated method stub
@@ -53,4 +65,3 @@ public class Pizza implements Comparable<Pizza>{
 				+ ", Sauce= " + this.sauce + ", Cheese= " + this.cheese + ", Toppings= " + this.toppings;
 	}
 }
-
