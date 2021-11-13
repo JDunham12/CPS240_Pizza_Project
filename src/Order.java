@@ -61,6 +61,7 @@ public class Order {
 		}
 	}
 	
+	//Adds a pre-defined Map<Pizza,Integer> to orderList
 	public void setOrderList(Map<Pizza, Integer> orderList) {
 		this.orderList = orderList;
 	}
