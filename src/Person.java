@@ -24,6 +24,10 @@ public class Person {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 	}
+	
+	public String getName() {
+		return this.name;
+	}
 
 	@Override
 	public String toString() {
