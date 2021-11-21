@@ -1,5 +1,7 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 //test
 public class Main{
@@ -14,23 +16,22 @@ public class Main{
 		*/
 		
 		
-		/*
-		List<String> toppings = new ArrayList<String>();
-
-		toppings.add("pineapple");
-		toppings.add("big chungus");
 		
-		Pizza epicPizza = new Pizza("The one to rule them all", 11, 9.0,"Raw Wheat", "The Stuff*", "The Finest Cheese", toppings);
-		Pizza epicPizza2 = new Pizza("The one to rule them all", 11, 9.0,"Raw Wheat", "The Stuff*", "The Finest Cheese", toppings);
 		
-		//System.out.println(epicPizza.toString());
+		/* TESTING (CAN BE DELETED) 
+		Pizza testPizza = new Pizza();
 		
-		Order firstOrder = new Order(cust);
+		Map.Entry<Integer, ArrayList<Pizza>> testEntry = Map.entry(1, new ArrayList<Pizza>());
+		testEntry.getValue().add(testPizza);
 		
-		firstOrder.addPizzaToOrder(epicPizza);
-		firstOrder.addPizzaToOrder(epicPizza2);
 		
-		System.out.println(firstOrder.printOrderList());
+		try {
+			Orders.checkForOrderFile();
+			Orders.addOrderToFile(testEntry);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		*/
 	}
 }

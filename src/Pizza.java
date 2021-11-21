@@ -11,8 +11,7 @@ public class Pizza implements Comparable<Pizza> {
 	private String sauce;
 	private String cheese;
 	private List<String> toppings;
-	// Pizza code???
-
+	
 	// Default Constructor
 	public Pizza() {
 
