@@ -9,34 +9,30 @@ public class Pizza implements Comparable<Pizza> {
 	private String name;
 	private String crust;
 	private String sauce;
-	private String cheese;
 	private List<String> toppings;
-	
+
 	// Default Constructor
 	public Pizza() {
-
+		toppings = new ArrayList<String>();
 	}
 
 	// Constructor w/ all parameters except toping list
-	public Pizza(String name, int size, double price, String crust, String sauce, String cheese) {
+	public Pizza(String name, int size, double price, String crust, String sauce) {
 		this.name = name;
 		this.size = size;
 		this.price = price;
 		this.crust = crust;
 		this.sauce = sauce;
-		this.cheese = cheese;
 		this.toppings = new ArrayList<String>();
 	}
 
 	// Constructor w/ Parameters
-	public Pizza(String name, int size, double price, String crust, String sauce, String cheese,
-			List<String> toppings) {
+	public Pizza(String name, int size, double price, String crust, String sauce, List<String> toppings) {
 		this.name = name;
 		this.size = size;
 		this.price = price;
 		this.crust = crust;
 		this.sauce = sauce;
-		this.cheese = cheese;
 		this.toppings = toppings;
 	}
 
@@ -60,7 +56,13 @@ public class Pizza implements Comparable<Pizza> {
 
 	@Override
 	public String toString() {
-		return "Name= " + name + ", Size= " + this.size + "Price= " + this.price + ", Crust= " + this.crust
-				+ ", Sauce= " + this.sauce + ", Cheese= " + this.cheese + ", Toppings= " + this.toppings;
+		String finalString = "Pizza: " + this.name + "\n" + "Size : " + this.size + "\n" + "Crust: " + this.crust + "\n"
+				+ "Sauce: " + this.sauce + "\n" + "Toppings:\n";
+		for (String topping : toppings) {
+				finalString += "     - " + topping + "\n";
+		}
+		finalString += "Price: " + this.price;
+
+		return finalString;
 	}
 }
