@@ -16,22 +16,7 @@ public class Main{
 		*/
 		
 		
-		
-		
-		/* TESTING (CAN BE DELETED) 
-		Pizza testPizza = new Pizza();
-		
-		Map.Entry<Integer, ArrayList<Pizza>> testEntry = Map.entry(1, new ArrayList<Pizza>());
-		testEntry.getValue().add(testPizza);
-		
-		
-		try {
-			Orders.checkForOrderFile();
-			Orders.addOrderToFile(testEntry);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+		 
+	
 	}
 }
