@@ -9,7 +9,7 @@ public class Manager extends Employee {
 
 	}
 
-	public void addManager(Person newManager) { // Changed from "Employee" to "Person" parameter
+	public void addManager(Person newManager) {
 
 	}
 
@@ -23,6 +23,6 @@ public class Manager extends Employee {
 
 	@Override
 	public String toString() {
-		return null;
+		return "";
 	}
 }

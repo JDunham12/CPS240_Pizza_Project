@@ -3,7 +3,6 @@ public class Customer extends Person {
 
 	private String customerID;
 	private String test;
-	private String bigChange;
 	
 	// Default Constructor
 	public Customer() {
