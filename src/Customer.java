@@ -11,14 +11,14 @@ public class Customer extends Person {
 	}
 
 	// Constructor w/ Parameters
-	public Customer(String name, String username, String password, String address, int phoneNumber, String customerID) {
+	public Customer(String name, String username, String password, String address, String phoneNumber) {
 		super(name, username, password, address, phoneNumber);
 		this.customerID = "EFJ246";
 	}
 
 	@Override
 	public String toString() {
-		return "Customer " + super.toString() + " [customerID=" + customerID + "]";
+		return super.toString() + "|" + customerID;
 	}
 
 }

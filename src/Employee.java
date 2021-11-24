@@ -18,7 +18,7 @@ public class Employee extends Person {
 	}
 
 	// Constructor w/ Parameters
-	public Employee(String name, String username, String password, String address, int phoneNumber, String employeeID,
+	public Employee(String name, String username, String password, String address, String phoneNumber, String employeeID,
 			String position, double wage, double yearToDateHours, boolean isFullTime) {
 		super(name, username, password, address, phoneNumber);
 		this.employeeID = employeeID;
@@ -30,8 +30,8 @@ public class Employee extends Person {
 
 	@Override
 	public String toString() {
-		return "Employee " + super.toString() + " [employeeID=" + employeeID + ", position=" + position + ", wage="
-				+ wage + ", yearToDateHours=" + yearToDateHours + ", isFullTime=" + isFullTime + "]";
+		return super.toString() + "|" + employeeID + "|" + position + "|"
+				+ wage + "|" + yearToDateHours + "|" + isFullTime;
 	}
 
 }
