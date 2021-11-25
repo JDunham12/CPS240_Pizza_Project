@@ -31,7 +31,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return name + "|" + username + "|" + password + "|" + address
-				+ "|" + phoneNumber;
+		return name + ":" + username + ":" + password + ":" + address
+				+ ":" + phoneNumber;
 	}
 }

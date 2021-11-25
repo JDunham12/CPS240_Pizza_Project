@@ -1,0 +1,6 @@
+John Smith:JSmith78:Password:p sherman 42, wallaby way sydney:1234567890:C10000
+Joe Shmoe:xXJShmoeXx:password:p sherman 43 wallaby way sydney:1891230101:C10000
+John Smith:JSmith79:P@ssword:The moon:8115552022:C10000
+Jill Lamill:JLamill:Password:p sherman 42, wallaby way sydney:1234567890:cashier:11.5:550.0:true:E10000
+Mary LastName:MLAstname:password:p sherman 43 wallaby way sydney:1891230101:Pizza Maker:11.5:550.0:true:E10000
+Sam Mus:Metroid:P@ssword:The moon:8115552022:Manager:20.0:5.0:false:E10000
