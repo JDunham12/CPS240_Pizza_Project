@@ -25,7 +25,7 @@ public class Employee extends Person {
 		this.wage = wage;
 		this.yearToDateHours = yearToDateHours;
 		this.isFullTime = isFullTime;
-		this.employeeID = "E" + (Integer.parseInt(lastID.substring(1, lastID.length())) + 1);
+		this.employeeID = "E" + (Integer.parseInt(lastID) + 1);
 	}
 
 	@Override

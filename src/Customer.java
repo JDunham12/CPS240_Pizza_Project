@@ -13,7 +13,7 @@ public class Customer extends Person {
 	// Constructor w/ Parameters
 	public Customer(String name, String username, String password, String address, String phoneNumber, String lastID) {
 		super(name, username, password, address, phoneNumber);
-		this.customerID = "C" + (Integer.parseInt(lastID.substring(1, (lastID.length()))) + 1);
+		this.customerID = "C" + (Integer.parseInt(lastID) + 1);
 	}
 
 	@Override
