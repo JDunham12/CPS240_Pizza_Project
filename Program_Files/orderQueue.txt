@@ -1,0 +1,3 @@
+Order of the day: 1, Customer ID: 2323, Total Price: 63.2, Pizzas: t1, t2, t3, 
+Order of the day: 1, Customer ID: 2323, Total Price: 63.2, Pizzas: t1, t2, t3, 
+Order of the day: 2, Customer ID: 2323, Total Price: 63.2, Pizzas: t1, t2, t3, 
