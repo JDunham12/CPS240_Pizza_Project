@@ -11,12 +11,12 @@ import java.util.Scanner;
 import java.util.Set;
 
 //test
-public class Main{
+public class Main {
 	public static void main(String[] args) {
 
 		// map used to add customers and employees to text document to store records
 		// after program closes
-		
+
 		Map<String, Person> personDatabase = new LinkedHashMap<String, Person>();
 		// points to PersonData.txt whether or not it exists yet
 		File file = new File("Program_Files\\PersonData.txt");
@@ -26,18 +26,18 @@ public class Main{
 
 		// content to fill customer/employee database with
 		// must be added one at a time
-		Customer cust1 = new Customer("John Smith", "JSmith78", "Password", "p sherman 42, wallaby way sydney",
-				"1234567890", getNextID(personDatabase));
-		Customer cust2 = new Customer("Joe Shmoe", "xXJShmoeXx", "password", "p sherman 43 wallaby way sydney",
-				"1891230101", getNextID(personDatabase));
-		Customer cust3 = new Customer("John Smith", "JSmith79", "P@ssword", "The moon", "8115552022",
-				getNextID(personDatabase));
-		Employee emp1 = new Employee("Jill Lamill", "JLamill", "Password", "p sherman 42, wallaby way sydney",
-				"1234567890", "cashier", 11.50, 550, true, getNextID(personDatabase));
-		Employee emp2 = new Employee("Mary LastName", "MLAstname", "password", "p sherman 43 wallaby way sydney",
-				"1891230101", "Pizza Maker", 11.50, 550, true, getNextID(personDatabase));
-		Employee emp3 = new Employee("Sam Mus", "Metroid", "P@ssword", "The moon", "8115552022", "Manager", 20.00, 5,
-				false, getNextID(personDatabase));
+		Customer cust1 = new Customer(getNextID(personDatabase), "John Smith", "JSmith78", "Password",
+				"p sherman 42, wallaby way sydney", "1234567890");
+		Customer cust2 = new Customer(getNextID(personDatabase), "Joe Shmoe", "xXJShmoeXx", "password",
+				"p sherman 43 wallaby way sydney", "1891230101");
+		Customer cust3 = new Customer(getNextID(personDatabase), "John Smith", "JSmith79", "P@ssword", "The moon",
+				"8115552022");
+		Employee emp1 = new Employee(getNextID(personDatabase), "Jill Lamill", "JLamill", "Password",
+				"p sherman 42, wallaby way sydney", "1234567890", "cashier", 11.50, 550, true);
+		Employee emp2 = new Employee(getNextID(personDatabase), "Mary LastName", "MLAstname", "password",
+				"p sherman 43 wallaby way sydney", "1891230101", "Pizza Maker", 11.50, 550, true);
+		Employee emp3 = new Employee(getNextID(personDatabase), "Sam Mus", "Metroid", "P@ssword", "The moon",
+				"8115552022", "Manager", 20.00, 5, false);
 		// System.out.println(cust1);
 
 		// uncomment any line below to add any of the above objects to text document
@@ -74,35 +74,36 @@ public class Main{
 			for (String s : ln) { // for each string in ln array
 				// System.out.println(s); //used to test what parts were separated by split
 			}
-			if (ln.length == 6) { // determines if line in persondata.txt is a customer by number of elements
+			if (ln[0].charAt(0) == 'C') { // determines if line in persondata.txt is a customer by number of elements
 				// makes customer object from pieces split into ln array by : delimiter
-				Customer cust = new Customer(ln[0], ln[1], ln[2], ln[3], ln[4], getNextID(db));
+				Customer cust = new Customer(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5]);
 				// Customer(0 String name, 1 String username, 2 String password, 3 String
 				// address, 4 String phoneNumber, 5 String lastID)<--------------Customer Format
 
-				db.put(ln[5], cust); // adds to map with CustomerID as key, and customer object as value
-				System.out.println("added customer from file to database"); // used to indicate that addition succeeds
-			} else if (ln.length == 10) { // determines if line in persondata.txt is an employee by number of elements
+				db.put(cust.getCustomerID(), cust); // adds to map with CustomerID as key, and customer object as value
+				System.out.println("added customer from file to map"); // used to indicate that addition succeeds
+			} else if (ln[0].charAt(0) == 'E') { // determines if line in persondata.txt is an employee by number of
+													// elements
 				Employee emp = null;
-				if (ln[8].equalsIgnoreCase("True")) { //full time employees
-					emp = new Employee(ln[0], ln[1], ln[2], ln[3], ln[4], ln[5], Double.parseDouble(ln[6]),
-							Double.parseDouble(ln[7]), false, getNextID(db));
+				if (ln[9].equalsIgnoreCase("True")) { // full time employees
+					emp = new Employee(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
+							Double.parseDouble(ln[7]), Double.parseDouble(ln[8]), false);
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
 					// address, 4 String phoneNumber, 5 String position, 6 double wage, 7 double
 					// yearToDateHours, 8 boolean isFullTime, 9 String lastID)<--Employee Format
 
-				} else { //part time employees
-					emp = new Employee(ln[0], ln[1], ln[2], ln[3], ln[4], ln[5], Double.parseDouble(ln[6]),
-							Double.parseDouble(ln[7]), true, getNextID(db));
+				} else { // part time employees
+					emp = new Employee(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
+							Double.parseDouble(ln[7]), Double.parseDouble(ln[8]), true);
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
 					// address, 4 String phoneNumber, 5 String position, 6 double wage, 7 double
 					// yearToDateHours, 8 boolean isFullTime, 9 String lastID)<--Employee Format
 
 				}
 				if (emp != null) {
-					db.put(ln[9], emp); // adds to map with EmployeeID as key, and employee object as value
+					db.put(emp.getEmployeeID(), emp); // adds to map with EmployeeID as key, and employee object as value
 				}
-				System.out.println("added employee from file to database"); // test to show successful addition
+				System.out.println("added employee from file to map"); // test to show successful addition
 			} else {
 				System.out.println("Data length of " + ln.length + " in line " + pageLineCounter
 						+ " is invalid for customer or employee."); // if ln.length doesn't match options
@@ -137,10 +138,32 @@ public class Main{
 		}
 	}
 
+	public static String formatCustomerForFile(Customer c) {
+		String s = (c.getCustomerID() + ":" + c.getName() + ":" + c.getUsername() + ":" + c.getPassword() + ":"
+				+ c.getAddress() + ":" + c.getPhoneNumber());
+		return s;
+	}
+
+	public static String formatEmployeeForFile(Employee e) {
+		String s = (e.getEmployeeID() + ":" + e.getName() + ":" + e.getUsername() + ":" + e.getPassword() + ":"
+				+ e.getAddress() + ":" + e.getPhoneNumber() + ":" + e.getPosition() + ":" + e.getWage() + ":"
+				+ e.getYearToDateHours() + ":" + e.getIsFullTime());
+		return s;
+	}
+	/*
+	public static String formatOrderForFile(Orders o) {
+		String s = (o.getEmployeeID() + ":" + o.getName() + ":" + o.getUsername() + ":" + o.getPassword() + ":"
+				+ o.getAddress() + ":" + o.getPhoneNumber() + ":" + o.getPosition() + ":" + o.getWage() + ":"
+				+ o.getYearToDateHours() + ":" + o.getIsFullTime());
+		return s;
+	}*/
+
 	public static<E> void addObjectToFile(E e, File file) {
 		String s = "";
-		if(e instanceof Person) {
-			s = e.toString();
+		if(e instanceof Customer && file.getPath().equals("Program_Files\\PersonData.txt")) {
+			s = formatCustomerForFile((Customer) e);
+		}else if(e instanceof Employee&& file.getPath().equals("Program_Files\\PersonData.txt")) {
+			s = formatEmployeeForFile((Employee) e);
 		}
 		try (FileWriter fw = new FileWriter(file, true);
 				BufferedWriter bw = new BufferedWriter(fw);

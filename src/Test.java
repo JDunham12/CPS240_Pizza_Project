@@ -15,23 +15,24 @@ public class Test {
 		bobsOrder.add(test2);
 		bobsOrder.add(test3);
 		
-		Person bob = new Customer("bob", "bobTheBuilder", "%KOP*", "12232 The Cool Place", "34343434", "25364");
+		Customer bob = new Customer("25364", "bob", "bobTheBuilder", "%KOP*", "12232 The Cool Place", "34343434");
 		
 		Entry<Integer, ArrayList<Pizza>> entry = Map.entry(2323,  bobsOrder);
 		Entry<Integer, ArrayList<Pizza>> entry2 = Map.entry(2323,  bobsOrder);
 		
-		Orders.addCompleteOrder(2323, bobsOrder);
+		
 		try {
+			Orders.addCompleteOrder(2323, bobsOrder);
 			Orders.printOrderRecipt(2323);
-		} catch (IOException e1) {
+		} catch (IOException | OrderNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		try {
-			Orders.addOrderToFile(entry);
-			Orders.addOrderToFile(entry2);
-		} catch (IOException e) {
+			Orders.addOrderToFile(entry.getKey());
+			Orders.addOrderToFile(entry.getKey());
+		} catch (IOException | OrderNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

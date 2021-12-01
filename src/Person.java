@@ -28,6 +28,18 @@ public class Person {
 	public String getName() {
 		return this.name;
 	}
+	public String getUsername() {
+		return username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
 	@Override
 	public String toString() {
