@@ -18,20 +18,20 @@ public class Employee extends Person {
 	}
 
 	// Constructor w/ Parameters
-	public Employee(String name, String username, String password, String address, String phoneNumber, String employeeID,
-			String position, double wage, double yearToDateHours, boolean isFullTime) {
+	public Employee(String name, String username, String password, String address, String phoneNumber,
+			String position, double wage, double yearToDateHours, boolean isFullTime, String lastID) {
 		super(name, username, password, address, phoneNumber);
-		this.employeeID = employeeID;
 		this.position = position;
 		this.wage = wage;
 		this.yearToDateHours = yearToDateHours;
 		this.isFullTime = isFullTime;
+		this.employeeID = "E" + (Integer.parseInt(lastID) + 1);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + "|" + employeeID + "|" + position + "|"
-				+ wage + "|" + yearToDateHours + "|" + isFullTime;
+		return super.toString() + ":" + position + ":"
+				+ wage + ":" + yearToDateHours + ":" + isFullTime + ":" + employeeID;
 	}
 
 }

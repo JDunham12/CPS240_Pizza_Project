@@ -47,6 +47,14 @@ public class Pizza implements Comparable<Pizza> {
 	public String getPizzaName() {
 		return this.name;
 	}
+	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
 	@Override
 	public int compareTo(Pizza o) {

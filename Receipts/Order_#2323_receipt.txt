@@ -1,0 +1,24 @@
+*************************************************************************
+Order Number: 2323
+-------------------------------------------------------------------------
+Pizza: t1
+Size : 14
+Crust: Thicc
+Sauce: The goood stuff
+Toppings:
+Price: 4.5
+Pizza: t2
+Size : 16
+Crust: Deep
+Sauce: Ranch me malato
+Toppings:
+Price: 7.8
+Pizza: t3
+Size : 34
+Crust: Thin
+Sauce: Oyster Sauce
+Toppings:
+Price: 50.9
+----------------------------------------------------------------------
+Total Cost: $63.2
+*************************************************************************

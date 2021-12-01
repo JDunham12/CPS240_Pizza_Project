@@ -10,15 +10,16 @@ public class Customer extends Person {
 		this.customerID = "EFJ246";
 	}
 
+	//Error from wrong input type. 
 	// Constructor w/ Parameters
-	public Customer(String name, String username, String password, String address, String phoneNumber) {
+	public Customer(String name, String username, String password, String address, String phoneNumber, String lastID) {
 		super(name, username, password, address, phoneNumber);
-		this.customerID = "EFJ246";
+		this.customerID = "C" + (Integer.parseInt(lastID) + 1);
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + "|" + customerID;
+		return super.toString() + ":" + customerID;
 	}
 
 }
