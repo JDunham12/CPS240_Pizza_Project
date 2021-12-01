@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 //test
-public class Main {
+public class Main{
 	public static void main(String[] args) {
 
 		// map used to add customers and employees to text document to store records
@@ -41,12 +41,12 @@ public class Main {
 		// System.out.println(cust1);
 
 		// uncomment any line below to add any of the above objects to text document
-		// addPersonToDatabase(cust1, file);
-		// addPersonToDatabase(cust2, file);
-		// addPersonToDatabase(cust3, file);
-		// addPersonToDatabase(emp1, file);
-		// addPersonToDatabase(emp2, file);
-		// addPersonToDatabase(emp3, file);
+		// addObjectToFile(cust1, file);
+		// addObjectToFile(cust2, file);
+		// addObjectToFile(cust3, file);
+		// addObjectToFile(emp1, file);
+		// addObjectToFile(emp2, file);
+		// addObjectToFile(emp3, file);
 
 	}
 
@@ -61,7 +61,7 @@ public class Main {
 				input = new Scanner(file); // opens scanner to read file
 				success = true; // allows loop to end
 			} catch (FileNotFoundException fnfe) { // checks if file does not exist
-				createDatabase(file); // makes file if did not already exist
+				createFile(file); // makes file if did not already exist
 			}
 		}
 		int pageLineCounter = 0;
@@ -84,14 +84,14 @@ public class Main {
 				System.out.println("added customer from file to database"); // used to indicate that addition succeeds
 			} else if (ln.length == 10) { // determines if line in persondata.txt is an employee by number of elements
 				Employee emp = null;
-				if (ln[8].equalsIgnoreCase("True")) {
+				if (ln[8].equalsIgnoreCase("True")) { //full time employees
 					emp = new Employee(ln[0], ln[1], ln[2], ln[3], ln[4], ln[5], Double.parseDouble(ln[6]),
 							Double.parseDouble(ln[7]), false, getNextID(db));
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
 					// address, 4 String phoneNumber, 5 String position, 6 double wage, 7 double
 					// yearToDateHours, 8 boolean isFullTime, 9 String lastID)<--Employee Format
 
-				} else {
+				} else { //part time employees
 					emp = new Employee(ln[0], ln[1], ln[2], ln[3], ln[4], ln[5], Double.parseDouble(ln[6]),
 							Double.parseDouble(ln[7]), true, getNextID(db));
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
@@ -129,7 +129,7 @@ public class Main {
 		}
 	}
 
-	public static void createDatabase(File f) { // creates a file based on location, name and type of f (txt)
+	public static void createFile(File f) { // creates a file based on location, name and type of f (txt)
 		try {
 			FileWriter dataWriter = new FileWriter(f, true); // creates text file based on f
 		} catch (IOException e) {
@@ -137,11 +137,15 @@ public class Main {
 		}
 	}
 
-	public static void addPersonToDatabase(Person p, File file) {
+	public static<E> void addObjectToFile(E e, File file) {
+		String s = "";
+		if(e instanceof Person) {
+			s = e.toString();
+		}
 		try (FileWriter fw = new FileWriter(file, true);
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter pw = new PrintWriter(bw);) {
-			pw.println(p.toString()); // uses toSting of Customer/Employee to write to add each line to
+			pw.println(s); // uses toSting of Customer/Employee to write to add each line to
 			// the bottom of the text document
 
 		} catch (IOException i) {
