@@ -5,7 +5,11 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
+import javafx.scene.text.Font;
 import javafx.stage.*;
+
+import java.awt.Checkbox;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -17,8 +21,11 @@ public class GUI extends Application {
 	String Employee = "E";
 	String CPass = "c";
 	String EPass = "e";
-	String[] menuitems = { "Pizza1", "Pizza2", "Pizza3" };
-
+	String[] menuitems = {"Cheese","Pepperoni","Green Peppers","Onions","Olives","Sausage","Ham","Pineapple","Anchovies","Chicken"};
+	Boolean[] toppingsSelected = {false, false, false, false, false, false, false, false, false, false};
+	List<CheckBox> toppingList = new ArrayList<CheckBox>();
+	String punchOutTime = "";
+	String punchInTime = "";
 	boolean CAccess, EAccess = false;
 
 	@Override
@@ -174,19 +181,58 @@ public class GUI extends Application {
 //opens Customer Screen	if user login was a customer	
 				if (CAccess) {
 					stage.close();
-					Label Title = new Label("Name of pizza place");
+					Label Title = new Label("Return to_Sleep Pizza");
+					Label label = new Label("Select the Toppings You Would Like");
 					Button secondbutton = new Button("Button"), cart = new Button("Cart");
 					secondbutton.setText("Logout, Customer");
-
+					CheckBox topping1 = new CheckBox("Cheese");
+					topping1.setPadding(new Insets(30, 20, 10, 20));
+					CheckBox topping2 = new CheckBox("Pepperoni");
+					topping2.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping3 = new CheckBox("Green Peppers");
+					topping3.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping4 = new CheckBox("Onions");
+					topping4.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping5 = new CheckBox("Olives");
+					topping5.setPadding(new Insets(10, 20, 60, 20));
+					CheckBox topping6 = new CheckBox("Sausage");
+					topping6.setPadding(new Insets(30, 20, 10, 20));
+					CheckBox topping7 = new CheckBox("Ham");
+					topping7.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping8 = new CheckBox("Pineapple");
+					topping8.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping9 = new CheckBox("Anchovies");
+					topping9.setPadding(new Insets(10, 20, 10, 20));
+					CheckBox topping10 = new CheckBox("Chicken");
+					topping10.setPadding(new Insets(10, 20, 60, 20));
+					toppingList.add(topping1);
+					toppingList.add(topping2);
+					toppingList.add(topping3);
+					toppingList.add(topping4);
+					toppingList.add(topping5);
+					toppingList.add(topping6);
+					toppingList.add(topping7);
+					toppingList.add(topping8);
+					toppingList.add(topping9);
+					toppingList.add(topping10);
+					
 					HBox hbox = new HBox(10, Title, cart, secondbutton);
+					HBox hbox2 = new HBox();
 ///////////////Creates a number of Hboxes depending on how many pizza's are available/////////////////////
-					VBox secondaryLayout = new VBox();
+					VBox primaryLayout = new VBox();
+					VBox secondaryLayout = new VBox(topping1, topping2, topping3, topping4, topping5);
+					
+					VBox tirtiaryLayout = new VBox(topping6, topping7, topping8, topping9, topping10);
 //Places all the Hboxes into the Vbox to format the GUI
-					secondaryLayout.getChildren().add(hbox);
+					hbox2.getChildren().addAll(secondaryLayout, tirtiaryLayout);
+					primaryLayout.getChildren().addAll(label, hbox2, hbox);
 //Creates the scene for the stage
-					Scene secondScene = new Scene(secondaryLayout, 650, 450);
+					Scene secondScene = new Scene(primaryLayout, 650, 450);
+					primaryLayout.setAlignment(Pos.CENTER);
 					secondaryLayout.setAlignment(Pos.CENTER);
 					hbox.setAlignment(Pos.CENTER);
+					hbox2.setAlignment(Pos.CENTER);
+					tirtiaryLayout.setAlignment(Pos.CENTER);
 //Creates the Customer window
 					Stage CustomerWindow = new Stage();
 					CustomerWindow.setTitle("Customer");
@@ -198,7 +244,54 @@ public class GUI extends Application {
 					cart.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
-							System.out.print("Show Cart");
+							for(int i = 0; i < 10; i++) {
+								toppingsSelected[i] = toppingList.get(i).isSelected();
+								System.out.println("#" + i + " " + toppingList.get(i).isSelected() + " ");
+							}
+							VBox vbox1 = new VBox();
+							
+							Label label = new Label("You Selected a Pizza With: \n\n");
+							HBox cartHb = new HBox(label);
+							vbox1.getChildren().add(cartHb);
+							for(CheckBox b: toppingList) {
+								if(b.isSelected() == true) {
+									Label toppingLabel = new Label();
+									toppingLabel.setText(b.getText());
+									vbox1.getChildren().add(toppingLabel);
+								}
+							}
+							
+							Button confirmButton = new Button("Confirm Purchase");
+							Button cancelButton = new Button("Cancel");
+							cancelButton.setCancelButton(true);
+							vbox1.getChildren().addAll(confirmButton, cancelButton);
+							cartHb.setAlignment(Pos.CENTER);
+							vbox1.setAlignment(Pos.CENTER);
+							Scene cartScene = new Scene(vbox1, 500, 500);
+							
+							//Creates the Customer window
+							Stage cartWindow = new Stage();
+							cartWindow.setTitle("Customer");
+							cartWindow.setScene(cartScene);
+							stage.centerOnScreen();
+							cartWindow.show();
+							cancelButton.setOnAction(e -> cartWindow.close());
+							confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									cartWindow.close();
+									Label thankYou = new Label("Thank You For Your Purchase!");
+									thankYou.setAlignment(Pos.CENTER);
+									Font font = new Font(50);
+									thankYou.setFont(font);
+									Scene purchaseScene = new Scene(thankYou, 700, 500);
+									Stage purchaseWindow = new Stage();
+									purchaseWindow.setTitle("Customer");
+									purchaseWindow.setScene(purchaseScene);
+									stage.centerOnScreen();
+									purchaseWindow.show();
+								}
+							});
 						}
 					});
 
@@ -222,7 +315,8 @@ public class GUI extends Application {
 //closes previous window
 					stage.close();
 //Creates buttons and labels
-					Button elogout = new Button(), punchIn = new Button(), punchOut = new Button();
+					Button elogout = new Button(), punchIn = new Button(), punchOut = new Button(); Label punchLabel = new Label();
+					punchLabel.setText("");
 					elogout.setText("Logout, Employee");
 					punchIn.setText("Punch \nIn");
 					punchOut.setText("Punch \nOut");
@@ -234,7 +328,7 @@ public class GUI extends Application {
 //Creates H and V boxes to make the GUI
 					HBox punchin_punchout = new HBox(20, punchIn, punchOut);
 					VBox secondaryLayout = new VBox(20);
-					secondaryLayout.getChildren().addAll(punchin_punchout, elogout, date);
+					secondaryLayout.getChildren().addAll(punchLabel, punchin_punchout, elogout, date);
 					secondaryLayout.setAlignment(Pos.CENTER);
 					punchin_punchout.setAlignment(Pos.CENTER);
 //Creates the new window for the employee side of the program
@@ -244,7 +338,27 @@ public class GUI extends Application {
 					EmployeeWindow.setScene(secondScene);
 					stage.centerOnScreen();
 					EmployeeWindow.show();
-
+					
+					punchIn.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+					        SimpleDateFormat time_format=new SimpleDateFormat("hh:mm:ss");
+					        Date date=new Date();
+					        String current_time=time_format.format(date);
+					        punchLabel.setText("Punched In At: " + current_time);
+					        punchInTime = current_time;
+						}
+					});
+					punchOut.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							SimpleDateFormat time_format=new SimpleDateFormat("hh:mm:ss");
+					        Date date=new Date();
+					        String current_time=time_format.format(date);
+					        punchLabel.setText("Punched In Out: " + current_time);
+					        punchOutTime = current_time;
+						}
+					});
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////					
 
 					create.setOnAction(new EventHandler<ActionEvent>() {
@@ -317,7 +431,7 @@ public class GUI extends Application {
 										for (int i = 0; i < Labels.length; i++) {
 											Labels[i] = new Label(menuitems[i]);
 										}
-										Label Title = new Label("Name of pizza place");
+										Label Title = new Label("Return to_Sleep Pizza");
 										Button secondbutton = new Button("Button"), cart = new Button("Cart");
 										secondbutton.setText("Logout, Customer");
 
