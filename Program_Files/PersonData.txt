@@ -1,0 +1,3 @@
+John Smith|JSmith78|Password|p sherman 42 wallaby way sydney|1234567890|EFJ246
+Joe Shmoe|xXJShmoeXx|password|p sherman 43 wallaby way sydney|1891230101|EFJ246
+John Smith|JSmith78|P@ssword|The moon|8115552022|EFJ246
