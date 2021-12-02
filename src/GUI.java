@@ -4,12 +4,15 @@ import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class GUI extends Application {
 //place holders
@@ -80,7 +83,8 @@ public class GUI extends Application {
 //////////////////////////////////////////////////////////////////////////////////////////////	
 		Label Title = new Label("Return to_Sleep Pizza");
 		Label toppings = new Label("Select the Toppings You Would Like");
-		Button secondbutton = new Button("Button"), cart = new Button("Cart");
+		Button secondbutton = new Button("Button"), goToCartBt = new Button("Go To Cart"); 
+		Button addToCartBt = new Button("Add To Cart");Button removeFromCartBt = new Button("Undo Last Pizza");
 		secondbutton.setText("Logout, Customer");
 		CheckBox topping1 = new CheckBox("Cheese");
 		topping1.setPadding(new Insets(30, 20, 10, 20));
@@ -112,17 +116,17 @@ public class GUI extends Application {
 		toppingList.add(topping8);
 		toppingList.add(topping9);
 		toppingList.add(topping10);
-		HBox chbox = new HBox(10, Title, cart, secondbutton);
+		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, goToCartBt, secondbutton);
 		HBox hbox2 = new HBox();
 		VBox primaryLayout = new VBox();
 		VBox secondaryLayout = new VBox(topping1, topping2, topping3, topping4, topping5);
 		VBox tirtiaryLayout = new VBox(topping6, topping7, topping8, topping9, topping10);
 		hbox2.getChildren().addAll(secondaryLayout, tirtiaryLayout);
-		primaryLayout.getChildren().addAll(toppings, hbox2, chbox);
+		primaryLayout.getChildren().addAll(toppings, hbox2, carthbox);
 		Scene secondScene = new Scene(primaryLayout, 650, 450);
 		primaryLayout.setAlignment(Pos.CENTER);
 		secondaryLayout.setAlignment(Pos.CENTER);
-		chbox.setAlignment(Pos.CENTER);
+		carthbox.setAlignment(Pos.CENTER);
 		hbox2.setAlignment(Pos.CENTER);
 		tirtiaryLayout.setAlignment(Pos.CENTER);
 		Stage CustomerWindow = new Stage();
@@ -207,7 +211,70 @@ public class GUI extends Application {
 		});
 //Cart Window/Handler
 /////////////////////////////////////////////////////////////////////////////////////////////////
-		cart.setOnAction(new EventHandler<ActionEvent>() {
+		removeFromCartBt.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Line minus = new Line();
+				minus.setStartX(25);
+				minus.setStartY(75);
+				minus.setEndX(125);
+				minus.setEndY(75);
+				minus.setStroke(Color.RED);
+				minus.setStrokeWidth(10);
+				Label addedLabel = new Label("Removed Last Pizza From Cart");
+				addedLabel.setPadding(new Insets(20, 20, 20, 20));
+				Button closeButton = new Button("Close");
+				closeButton.setPadding(new Insets(20, 20, 20, 20));
+				addedLabel.setAlignment(Pos.CENTER);
+				Group group = new Group(minus);
+				VBox addedVBox = new VBox(group, addedLabel, closeButton);
+				addedVBox.setAlignment(Pos.CENTER);
+				Scene added = new Scene(addedVBox , 200, 200);
+				Stage addedWindow = new Stage();
+				addedWindow.setScene(added);
+				addedWindow.show();
+				closeButton.setOnAction(e -> addedWindow.close());
+			}
+		});
+		addToCartBt.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				for(CheckBox cb: toppingList) {
+					cb.setSelected(false);
+				}
+				Line checkPart1 = new Line();
+				checkPart1.setStartX(50);
+				checkPart1.setStartY(75);
+				checkPart1.setEndX(75);
+				checkPart1.setEndY(100);
+				checkPart1.setStroke(Color.GREEN);
+				checkPart1.setStrokeWidth(5);
+				Line checkPart2 = new Line();
+				checkPart2.setStartX(75);
+				checkPart2.setStartY(100);
+				checkPart2.setEndX(125);
+				checkPart2.setEndY(40);
+				
+				checkPart2.setStroke(Color.GREEN);
+				checkPart2.setStrokeWidth(5);
+				Label addedLabel = new Label("Pizza Added to Cart");
+				addedLabel.setPadding(new Insets(20, 20, 20, 20));
+				Button closeButton = new Button("Close");
+				closeButton.setPadding(new Insets(20, 20, 20, 20));
+				addedLabel.setAlignment(Pos.CENTER);
+				Group group = new Group(checkPart1, checkPart2);
+				VBox addedVBox = new VBox(group, addedLabel, closeButton);
+				addedVBox.setAlignment(Pos.CENTER);
+				Scene added = new Scene(addedVBox , 200, 200);
+				Stage addedWindow = new Stage();
+				addedWindow.setScene(added);
+				addedWindow.show();
+				closeButton.setOnAction(e -> addedWindow.close());
+			}
+		});
+//Displays cart contents
+////////////////////////////////////////////////////////////////////////////////////////////////
+		goToCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				for (int i = 0; i < 10; i++) {
@@ -241,7 +308,8 @@ public class GUI extends Application {
 				stage.centerOnScreen();
 				cartWindow.show();
 				cancelButton.setOnAction(e -> cartWindow.close());
-				
+//Displays Receipt after Purchase
+////////////////////////////////////////////////////////////////////////////////////////////				
 				confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -333,18 +401,22 @@ public class GUI extends Application {
 					ecreate.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
-							// Closes previous window
+							// no longer closes previous window
 
-							EmployeeWindow.close();
+							//EmployeeWindow.close();
 							// Creates all the fields and buttons need for making a new account
 							TextField ctf1 = new TextField(), ctf2 = new TextField(), ctf3 = new TextField(),
-									ctf4 = new TextField(), ctf5 = new TextField();
+									ctf4 = new TextField(), ctf5 = new TextField(), ctf6 = new TextField(),
+									ctf7 = new TextField();
+							CheckBox cb = new CheckBox();
+							 //position, double wage, double yearToDateHours, boolean isFullTime
 							Button logreturn = new Button("Return to login");
 							Button newlog = new Button("Create new employee");
 							Label newacc = new Label("Please create a new username and password");
 							Label newacc1 = new Label("Username:"), newacc2 = new Label("Password:"),
 									newacc3 = new Label("Name:"), newacc4 = new Label("Address:"),
-									newacc5 = new Label("Phone Number:");
+									newacc5 = new Label("Phone Number:"), newacc6 = new Label("position:"),
+									newacc7 = new Label("wage:"), newacc8 = new Label("isFullTime:");
 							ctf1.setMaxWidth(240);
 							ctf2.setMaxWidth(240);
 							ctf3.setMaxWidth(240);
@@ -352,10 +424,19 @@ public class GUI extends Application {
 							ctf5.setMaxWidth(240);
 							// Creates Hboxes and Vboxes for format the GUI
 							HBox hcreateLayout = new HBox(40, logreturn, newlog);
-							VBox vcreateLayout = new VBox(10, newacc, newacc1, ctf1, newacc2, ctf2, newacc3, ctf3,
-									newacc4, ctf4, newacc5, ctf5);
+							VBox vcreateLayout = new VBox(10, newacc1, ctf1, newacc2, ctf2, newacc3, ctf3,
+									newacc4, ctf4);
+							VBox vcreateSecondLayout = new VBox(10, newacc5, ctf5, newacc6, ctf6, newacc7, ctf7, newacc8, cb);
+							vcreateSecondLayout.setAlignment(Pos.CENTER);
 							vcreateLayout.getChildren().add(hcreateLayout);
-							Scene createScene = new Scene(vcreateLayout, 650, 450);
+							vcreateSecondLayout.setPadding(new Insets(20, 20, 20, 20));
+							vcreateLayout.setPadding(new Insets(20, 20, 20, 20));
+							HBox fields = new HBox(vcreateLayout, vcreateSecondLayout);
+							fields.setAlignment(Pos.CENTER);
+							fields.setPadding(new Insets(20, 20, 20, 20));
+							VBox outerVbox = new VBox( newacc, fields, hcreateLayout);
+							outerVbox.setAlignment(Pos.CENTER);
+							Scene createScene = new Scene(outerVbox, 650, 450);
 							vcreateLayout.setAlignment(Pos.CENTER);
 							hcreateLayout.setAlignment(Pos.CENTER);
 							// Creates the window for making a new account
@@ -383,7 +464,7 @@ public class GUI extends Application {
 							newlog.setOnAction(new EventHandler<ActionEvent>() {
 								@Override
 								public void handle(ActionEvent event) {
-
+									CreateWindow.close();
 								}
 							});
 						}
@@ -405,6 +486,14 @@ public class GUI extends Application {
 				}
 			}
 		});
+	}
+	static void sleep() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public static void main(String[] args) {
 		launch(args);

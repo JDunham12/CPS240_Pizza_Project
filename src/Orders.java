@@ -41,7 +41,7 @@ public class Orders {
 	}
 
 	/**
-	 * Adds an orderNumber and list of pizzas as an Entry to the orderMap.
+	 * Removes an orderNumber and list of pizzas Entry from the orderMap.
 	 * 
 	 * @param orderNumber - The order number identified with that particular order.
 	 * @param pizzaList   - List of Pizza objects associated with the order.
