@@ -31,6 +31,8 @@ public class GUI extends Application {
 	List<CheckBox> toppingList = new ArrayList<CheckBox>();
 	String punchOutTime = "";
 	String punchInTime = "";
+	TextField tf1;
+	TextField tf2;
 	boolean CAccess, EAccess = false;
 
 	@Override
@@ -44,7 +46,8 @@ public class GUI extends Application {
 		Label label = new Label("Welcome!");
 		Label label1 = new Label("Username:");
 		Label label2 = new Label("Password:");
-		TextField tf1 = new TextField(), tf2 = new TextField();
+		tf1 = new TextField(); 
+		tf2 = new TextField();
 		HBox hbox = new HBox(20, quit, create, loginButton);
 		VBox pane = new VBox(10, label1, tf1, label2, tf2, label);
 		pane.getChildren().add(hbox);
@@ -347,19 +350,24 @@ public class GUI extends Application {
 //Handler for login button
 //////////////////////////////////////////////////////////////////////////////////////////
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
-			String userID = Main.checkLoginCredentials("JSmith78", "Password");
+			
 			public void handle(ActionEvent event) {
-				if (userID == null) {
-					if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
+				String userID = "";
+				if (tf1.getText() != null && !tf1.getText().isEmpty() && tf2.getText() != null && !tf2.getText().isEmpty()) {
+					userID = Main.checkLoginCredentials(tf1.getText(), tf2.getText());
+				}else {
+					label.setText("Empty TextField");
+				}
+				if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
 						if(userID.charAt(0) == 'C') {
 							CAccess = true;
+							Person cust = Main.personDatabase.get(userID);
 						}else if (userID.charAt(0) == 'E') {
 							EAccess = true;
-							//Employee emp = Main.personDatabase.get(userID);
+							Person emp = Main.personDatabase.get(userID);
 						}
-					}
 				}else {
-					label.setText("UserID = " + userID );
+					label.setText("u+p:" + userID);
 				}
 //Opens Customers
 //////////////////////////////////////////////////////////////////////////////////////////////////

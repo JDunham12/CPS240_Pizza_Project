@@ -34,11 +34,15 @@ public class Main {
 				"p sherman 43 wallaby way sydney", "1891230101");
 		Customer cust3 = new Customer(getNextID(personDatabase), "John Smith", "JSmith79", "P@ssword", "The moon",
 				"8115552022");
+		Customer cust4 = new Customer(getNextID(personDatabase), "C", "c", "P@ssword", "The moon",
+				"8115552022");
 		Employee emp1 = new Employee(getNextID(personDatabase), "Jill Lamill", "JLamill", "Password",
 				"p sherman 42, wallaby way sydney", "1234567890", "Cashier", 11.50, 550, true);
 		Employee emp2 = new Employee(getNextID(personDatabase), "Mary LastName", "MLAstname", "password",
 				"p sherman 43 wallaby way sydney", "1891230101", "Pizza Maker", 11.50, 550, true);
 		Employee emp3 = new Employee(getNextID(personDatabase), "Sam Mus", "Metroid", "P@ssword", "The moon",
+				"8115552022", "Manager", 20.00, 5, false);
+		Employee emp4 = new Employee(getNextID(personDatabase), "Sam Mus", "E", "e", "The moon",
 				"8115552022", "Manager", 20.00, 5, false);
 		// System.out.println(cust1);
 
@@ -46,9 +50,11 @@ public class Main {
 		// addObjectToFile(cust1, file);
 		// addObjectToFile(cust2, file);
 		// addObjectToFile(cust3, file);
+		// addObjectToFile(cust4, file);
 		// addObjectToFile(emp1, file);
 		// addObjectToFile(emp2, file);
 		// addObjectToFile(emp3, file);
+		// addObjectToFile(emp4, file);
 
 	}
 
@@ -142,7 +148,7 @@ public class Main {
 				}
 			}
 		}
-		return null;
+		return u + "" + p;
 	}
 
 	public static void createFile(File f) { // creates a file based on location, name and type of f (txt)
