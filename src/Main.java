@@ -12,17 +12,19 @@ import java.util.Set;
 
 //test
 public class Main {
+	static Map<String, Person> personDatabase = new LinkedHashMap<String, Person>();
+	static File file = new File("Program_Files\\PersonData.txt"); 
 	public static void main(String[] args) {
 
 		// map used to add customers and employees to text document to store records
 		// after program closes
 		
-		Map<String, Person> personDatabase = new LinkedHashMap<String, Person>();
+		
 		// points to PersonData.txt whether or not it exists yet
-		File file = new File("Program_Files\\PersonData.txt");
+		
 		// calls method to collect data from given text document and populates given map
 		// with contents
-		loadPersonDatabase(personDatabase, file);
+		loadPersonDatabase();
 
 		// content to fill customer/employee database with
 		// must be added one at a time
@@ -33,7 +35,7 @@ public class Main {
 		Customer cust3 = new Customer(getNextID(personDatabase), "John Smith", "JSmith79", "P@ssword", "The moon",
 				"8115552022");
 		Employee emp1 = new Employee(getNextID(personDatabase), "Jill Lamill", "JLamill", "Password",
-				"p sherman 42, wallaby way sydney", "1234567890", "cashier", 11.50, 550, true);
+				"p sherman 42, wallaby way sydney", "1234567890", "Cashier", 11.50, 550, true);
 		Employee emp2 = new Employee(getNextID(personDatabase), "Mary LastName", "MLAstname", "password",
 				"p sherman 43 wallaby way sydney", "1891230101", "Pizza Maker", 11.50, 550, true);
 		Employee emp3 = new Employee(getNextID(personDatabase), "Sam Mus", "Metroid", "P@ssword", "The moon",
@@ -53,7 +55,7 @@ public class Main {
 	// can be made generic to add other ojects to files, or can instead have all
 	// files and db added
 	// fills given map with data from given : delimited text file
-	public static void loadPersonDatabase(Map<String, Person> db, File file) {
+	public static void loadPersonDatabase() {
 		Scanner input = null;
 		boolean success = false; // used to check to end while loop if file exists, or after creation
 		while (success != true) {
@@ -76,24 +78,24 @@ public class Main {
 			}
 			if (ln[0].charAt(0) == 'C') { // determines if line in persondata.txt is a customer by number of elements
 				// makes customer object from pieces split into ln array by : delimiter
-				Customer cust = new Customer(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5]);
+				Customer cust = new Customer(getNextID(personDatabase), ln[1], ln[2], ln[3], ln[4], ln[5]);
 				// Customer(0 String name, 1 String username, 2 String password, 3 String
 				// address, 4 String phoneNumber, 5 String lastID)<--------------Customer Format
 
-				db.put(cust.getCustomerID(), cust); // adds to map with CustomerID as key, and customer object as value
+				personDatabase.put(cust.getCustomerID(), cust); // adds to map with CustomerID as key, and customer object as value
 				System.out.println("added customer from file to map"); // used to indicate that addition succeeds
 			} else if (ln[0].charAt(0) == 'E') { // determines if line in persondata.txt is an employee by number of
 													// elements
 				Employee emp = null;
 				if (ln[9].equalsIgnoreCase("True")) { // full time employees
-					emp = new Employee(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
+					emp = new Employee(getNextID(personDatabase), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
 							Double.parseDouble(ln[7]), Double.parseDouble(ln[8]), false);
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
 					// address, 4 String phoneNumber, 5 String position, 6 double wage, 7 double
 					// yearToDateHours, 8 boolean isFullTime, 9 String lastID)<--Employee Format
 
 				} else { // part time employees
-					emp = new Employee(getNextID(db), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
+					emp = new Employee(getNextID(personDatabase), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
 							Double.parseDouble(ln[7]), Double.parseDouble(ln[8]), true);
 					// Employee(0 String name, 1 String username, 2 String password, 3 String
 					// address, 4 String phoneNumber, 5 String position, 6 double wage, 7 double
@@ -101,7 +103,7 @@ public class Main {
 
 				}
 				if (emp != null) {
-					db.put(emp.getEmployeeID(), emp); // adds to map with EmployeeID as key, and employee object as value
+					personDatabase.put(emp.getEmployeeID(), emp); // adds to map with EmployeeID as key, and employee object as value
 				}
 				System.out.println("added employee from file to map"); // test to show successful addition
 			} else {
@@ -128,6 +130,19 @@ public class Main {
 		} else { // if an ID was in the map
 			return ID.substring(1, ID.length()); // returns key without first character (removes E/C)
 		}
+	}
+	
+	public static boolean checkLoginCredentials(String u, String p){
+		for(String s: personDatabase.keySet()) {
+			if(u.equals(s)) {
+				if(p.equals(personDatabase.get(u).getPassword())) {
+					return true;
+				}else {
+					System.out.println("wrong password");
+				}
+			}
+		}
+		return false;
 	}
 
 	public static void createFile(File f) { // creates a file based on location, name and type of f (txt)
@@ -165,7 +180,7 @@ public class Main {
 		}else if(e instanceof Employee&& file.getPath().equals("Program_Files\\PersonData.txt")) {
 			s = formatEmployeeForFile((Employee) e);
 		}
-		try (FileWriter fw = new FileWriter(file, true);
+		try (FileWriter fw = new FileWriter(file, true); 
 				BufferedWriter bw = new BufferedWriter(fw);
 				PrintWriter pw = new PrintWriter(bw);) {
 			pw.println(s); // uses toSting of Customer/Employee to write to add each line to

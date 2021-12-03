@@ -13,14 +13,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GUI extends Application {
 //place holders
+	
 	String Customer = "C";
 	String Employee = "E";
 	String CPass = "c";
 	String EPass = "e";
+	Boolean loginResult = false;
 	String[] menuitems = { "Cheese", "Pepperoni", "Green Peppers", "Onions", "Olives", "Sausage", "Ham", "Pineapple",
 			"Anchovies", "Chicken" };
 	Boolean[] toppingsSelected = { false, false, false, false, false, false, false, false, false, false };
@@ -489,6 +493,7 @@ public class GUI extends Application {
 		});
 	}
 	public static void main(String[] args) {
+		Main.main(null);
 		launch(args);
 	}
 }
