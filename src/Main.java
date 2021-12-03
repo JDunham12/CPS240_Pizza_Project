@@ -133,28 +133,16 @@ public class Main {
 	}
 	
 	public static String checkLoginCredentials(String u, String p){
-		//int count = 0;
-		String lastU = "";
-		String lastP = u;
-		String t = "test";
 		for(String s: personDatabase.keySet()) {
-			//lastU = personDatabase.get(s).getUsername();
-			//lastP = personDatabase.get(s).getPassword();
-			if(("xXJShmoeXx").equals("xXJShmoeXx")) {
-				System.out.println(lastP);
-				System.out.println("xXJShmoeXx");
-				System.out.println(u.equals("xXJShmoeXx"));
-			}
-			if(u == personDatabase.get(s).getUsername()) {
-				if(p == personDatabase.get(s).getPassword()) {
+			if(u.compareTo(personDatabase.get(s).getUsername()) == 0) {
+				if(p.compareTo(personDatabase.get(s).getPassword()) == 0) {
 					return s;
 				}else {
 					System.out.println("wrong password");
 				}
 			}
 		}
-		
-		return "u given: " + u + "p given: " + p;
+		return null;
 	}
 
 	public static void createFile(File f) { // creates a file based on location, name and type of f (txt)
