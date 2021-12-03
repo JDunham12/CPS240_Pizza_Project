@@ -11,8 +11,9 @@ import javafx.stage.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class GUI extends Application {
 //place holders
@@ -486,14 +487,6 @@ public class GUI extends Application {
 				}
 			}
 		});
-	}
-	static void sleep() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	public static void main(String[] args) {
 		launch(args);
