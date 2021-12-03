@@ -19,7 +19,8 @@ import java.util.Map;
 
 public class GUI extends Application {
 //place holders
-	
+	Person cust;
+	Person emp;
 	String Customer = "C";
 	String Employee = "E";
 	String CPass = "c";
@@ -361,13 +362,13 @@ public class GUI extends Application {
 				if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
 						if(userID.charAt(0) == 'C') {
 							CAccess = true;
-							Person cust = Main.personDatabase.get(userID);
+							cust = Main.personDatabase.get(userID);
 						}else if (userID.charAt(0) == 'E') {
 							EAccess = true;
-							Person emp = Main.personDatabase.get(userID);
+							emp = Main.personDatabase.get(userID);
 						}
 				}else {
-					label.setText("u+p:" + userID);
+					label.setText("Wrong Username and or Password");
 				}
 //Opens Customers
 //////////////////////////////////////////////////////////////////////////////////////////////////
