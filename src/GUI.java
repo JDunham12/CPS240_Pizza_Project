@@ -32,20 +32,23 @@ public class GUI extends Application {
 	String punchOutTime = "";
 	String punchInTime = "";
 	boolean CAccess, EAccess = false;
+	TextField tf1;
+	TextField tf2;
 
 	@Override
 	public void start(final Stage stage) {
 
 //Sets up the first window to be launched
 ////////////////////////////////////////////////////////////////////////////////////////////////
-		Button button = new Button("Login");
+		Button loginButton = new Button("Login");
 		Button quit = new Button("Exit");
 		Button create = new Button("Create new account");
 		Label label = new Label("Welcome!");
 		Label label1 = new Label("Username:");
 		Label label2 = new Label("Password:");
-		TextField tf1 = new TextField(), tf2 = new TextField();
-		HBox hbox = new HBox(20, quit, create, button);
+		tf1 = new TextField();
+		tf2 = new TextField();
+		HBox hbox = new HBox(20, quit, create, loginButton);
 		VBox pane = new VBox(10, label1, tf1, label2, tf2, label);
 		pane.getChildren().add(hbox);
 		tf1.setMaxWidth(240);
@@ -177,8 +180,6 @@ public class GUI extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						label.setText("Welcome!");
-						tf1.setText("");
-						tf2.setText("");
 						CAccess = false;
 						EAccess = false;
 						CreateWindow.close();
@@ -201,8 +202,6 @@ public class GUI extends Application {
 								@Override
 								public void handle(ActionEvent event) {
 									label.setText("Welcome!");
-									tf1.setText("");
-									tf2.setText("");
 									CAccess = false;
 									EAccess = false;
 									CustomerWindow.close();
@@ -346,15 +345,22 @@ public class GUI extends Application {
 		
 //Handler for login button
 //////////////////////////////////////////////////////////////////////////////////////////
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
+		loginButton.setOnAction(new EventHandler<ActionEvent>() {
+			String userID = Main.checkLoginCredentials("xXJShmoeXx", "password");
 			public void handle(ActionEvent event) {
-				if (Customer.equals(tf1.getText()) && CPass.equals(tf2.getText()))
-					CAccess = true;
-				else if (Employee.equals(tf1.getText()) && EPass.equals(tf2.getText()))
-					EAccess = true;
-				else
-					label.setText("Username or Password was incorrect");
+				//if (userID != null) {
+				if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
+					if(userID.charAt(0) == 'C') {
+						CAccess = true;
+					}else if (userID.charAt(0) == 'E') {
+						EAccess = true;
+						//Employee emp = Main.personDatabase.get(userID);
+					}
+				}else {
+					label.setText(userID );
+					tf1.setText("xXJShmoeXx");
+					tf2.setText("password");
+				}
 //Opens Customers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 				if (CAccess) {
@@ -365,8 +371,6 @@ public class GUI extends Application {
 						@Override
 						public void handle(ActionEvent event) {
 							label.setText("Welcome!");
-							tf1.setText("");
-							tf2.setText("");
 							CAccess = false;
 							EAccess = false;
 							CustomerWindow.close();
@@ -457,8 +461,6 @@ public class GUI extends Application {
 								@Override
 								public void handle(ActionEvent event) {
 									label.setText("Welcome!");
-									tf1.setText("");
-									tf2.setText("");
 									CAccess = false;
 									EAccess = false;
 									CreateWindow.close();
@@ -480,8 +482,6 @@ public class GUI extends Application {
 						@Override
 						public void handle(ActionEvent event) {
 							label.setText("Welcome!");
-							tf1.setText("");
-							tf2.setText("");
 							CAccess = false;
 							EAccess = false;
 							EmployeeWindow.close();

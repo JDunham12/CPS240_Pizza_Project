@@ -5,3 +5,4 @@ E100003:Jill Lamill:JLamill:Password:p sherman 42, wallaby way sydney:1234567890
 C100004:John Smith:JSmith79:P@ssword:The moon:8115552022
 E100005:Sam Mus:Metroid:P@ssword:The moon:8115552022:Manager:20.0:5.0:false
 C100006:John Smith:JSmith78:Password:p sherman 42, wallaby way sydney:1234567890
+C100007:Joe Shmoe:xXJShmoeXx:password:p sherman 43 wallaby way sydney:1891230101
