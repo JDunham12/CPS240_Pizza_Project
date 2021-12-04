@@ -288,6 +288,7 @@ public class GUI extends Application {
 				VBox cancelVBox = new VBox();
 				
 				if(Orders.getOrder(cust.getUsername()) != null) {
+					Orders.removeOrder(cust.getUsername());
 					cancelLabel = new Label("Previous Order Canceled");
 				}else {
 					cancelLabel = new Label("No previous orders");
@@ -407,15 +408,15 @@ public class GUI extends Application {
 						pizzaCounter = 0;
 						
 						//Adding Pizzas to the Map
-						try {
-							Orders.addCompleteOrder(cust.getUsername(), pizzaCart);
-							pizzaCart = new ArrayList<Pizza>();
-							}catch(IOException e1) {
-								System.out.println(e1.toString());
-							}catch(OrderNotFoundException e2) {
-								System.out.println(e2.toString());
-							}
 						
+							try {
+								Orders.addCompleteOrder(cust.getUsername(), pizzaCart);
+								pizzaCart = new ArrayList<Pizza>();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
 						cartWindow.close();
 						Label thankYou = new Label("Thank You For Your Purchase!");
 						thankYou.setAlignment(Pos.CENTER);
