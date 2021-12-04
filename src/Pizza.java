@@ -55,7 +55,7 @@ public class Pizza {
 
 	@Override
 	public String toString() {
-		String finalString = "Pizza Number: " + this.pizzaNumber + ", Pizza Price: $" + this.totalPrice + ", Toppings: ";
+		String finalString = "Pizza Number: " + this.pizzaNumber + ", Price: $" + this.totalPrice + ", Toppings: ";
 		for(String topping : pizzaToppings)
 			finalString += topping + ", "; 
 		return finalString;

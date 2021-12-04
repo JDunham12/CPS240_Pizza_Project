@@ -9,11 +9,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
-//<<<<<<< HEAD
 import java.io.File;
-//=======
 import java.io.IOException;
-//>>>>>>> branch 'master' of https://github.com/gitgud115/CPS240_Pizza_Project.git
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,14 +34,17 @@ public class GUI extends Application {
 	String[] menuitems = { "Cheese", "Pepperoni", "Green Peppers", "Onions", "Olives", "Sausage", "Ham", "Pineapple",
 			"Anchovies", "Chicken" };
 	Boolean[] toppingsSelected = { false, false, false, false, false, false, false, false, false, false };
-	List<CheckBox> toppingList = new ArrayList<CheckBox>();
-	List<Pizza> pizzaCart = new ArrayList<Pizza>();
+	
 	String punchOutTime = "";
 	String punchInTime = "";
 	TextField tf1;
 	TextField tf2;
-	int pizzaCounter;
 	boolean CAccess, EAccess = false;
+	
+	//Pizza Related Variables
+	List<CheckBox> toppingList = new ArrayList<CheckBox>();
+	List<Pizza> pizzaCart = new ArrayList<Pizza>();
+	int pizzaCounter = 0;
 
 	@Override
 	public void start(final Stage stage) {
@@ -104,6 +104,7 @@ public class GUI extends Application {
 		Label toppings = new Label("Select the Toppings You Would Like");
 		Button cLogoutBt = new Button("Logout, Customer"), goToCartBt = new Button("Go To Cart"); 
 		Button addToCartBt = new Button("Add To Cart");Button removeFromCartBt = new Button("Undo Last Pizza");
+		Button cancelOrderBt = new Button("Cancel Previous Order");
 		CheckBox topping1 = new CheckBox("Cheese");
 		topping1.setPadding(new Insets(30, 20, 10, 20));
 		CheckBox topping2 = new CheckBox("Pepperoni");
@@ -134,7 +135,8 @@ public class GUI extends Application {
 		toppingList.add(topping8);
 		toppingList.add(topping9);
 		toppingList.add(topping10);
-		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, goToCartBt, cLogoutBt);
+		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, cancelOrderBt, goToCartBt, cLogoutBt);
+
 		HBox hbox2 = new HBox();
 		VBox primaryLayout = new VBox();
 		VBox secondaryLayout = new VBox(topping1, topping2, topping3, topping4, topping5);
@@ -237,6 +239,17 @@ public class GUI extends Application {
 		removeFromCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				Label undoLabel;
+				
+				if(pizzaCart.size() == 0) {
+					undoLabel = new Label("Cart is empty");
+				}else {
+					pizzaCart.remove(pizzaCart.size()-1);
+					undoLabel = new Label("Removed Last Pizza From Cart");
+					pizzaCounter--;
+				}
+		
+				//Popup Screen Configs
 				Line minus = new Line();
 				minus.setStartX(25);
 				minus.setStartY(75);
@@ -244,14 +257,15 @@ public class GUI extends Application {
 				minus.setEndY(75);
 				minus.setStroke(Color.RED);
 				minus.setStrokeWidth(10);
-				Label addedLabel = new Label("Removed Last Pizza From Cart");
-				addedLabel.setPadding(new Insets(20, 20, 20, 20));
+				undoLabel.setPadding(new Insets(20, 20, 20, 20));
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
-				addedLabel.setAlignment(Pos.CENTER);
+				undoLabel.setAlignment(Pos.CENTER);
 				Group group = new Group(minus);
-				VBox addedVBox = new VBox(group, addedLabel, closeButton);
+				VBox addedVBox = new VBox(group, undoLabel, closeButton);
 				addedVBox.setAlignment(Pos.CENTER);
+				
+				//Scene Preparation
 				Scene added = new Scene(addedVBox , 200, 200);
 				Stage addedWindow = new Stage();
 				addedWindow.setScene(added);
@@ -259,11 +273,40 @@ public class GUI extends Application {
 				closeButton.setOnAction(e -> addedWindow.close());
 			}
 		});
+		
+		cancelOrderBt.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				
+				Button closeButton = new Button("Close");
+				closeButton.setPadding(new Insets(20, 20, 20, 20));
+				
+				Label cancelLabel = new Label();
+				cancelLabel.setPadding(new Insets(20, 20, 20, 20));
+				cancelLabel.setAlignment(Pos.CENTER);
+				
+				VBox cancelVBox = new VBox();
+				
+				if(Orders.getOrder(cust.getUsername()) != null) {
+					cancelLabel = new Label("Previous Order Canceled");
+				}else {
+					cancelLabel = new Label("No previous orders");
+				}
+				
+				cancelVBox = new VBox(cancelLabel, closeButton);
+				cancelVBox.setAlignment(Pos.CENTER);
+				Scene cancel = new Scene(cancelVBox , 200, 200);
+				Stage addedWindow = new Stage();
+				addedWindow.setScene(cancel);
+				addedWindow.show();
+				closeButton.setOnAction(e -> addedWindow.close());
+			}
+		});
+		
 		addToCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				
-				//Creating new PizzaC
 				ArrayList<String> tempToppingsList = new ArrayList<String>();
 				
 				for(CheckBox cb: toppingList) {
@@ -272,31 +315,42 @@ public class GUI extends Application {
 					cb.setSelected(false);
 				}
 				
-				pizzaCart.add(new Pizza(pizzaCounter,tempToppingsList));
-				
-				Line checkPart1 = new Line();
-				
-				checkPart1.setStartX(50);
-				checkPart1.setStartY(75);
-				checkPart1.setEndX(75);
-				checkPart1.setEndY(100);
-				checkPart1.setStroke(Color.GREEN);
-				checkPart1.setStrokeWidth(5);
-				Line checkPart2 = new Line();
-				checkPart2.setStartX(75);
-				checkPart2.setStartY(100);
-				checkPart2.setEndX(125);
-				checkPart2.setEndY(40);
-				
-				checkPart2.setStroke(Color.GREEN);
-				checkPart2.setStrokeWidth(5);
-				Label addedLabel = new Label("Pizza Added to Cart");
-				addedLabel.setPadding(new Insets(20, 20, 20, 20));
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
+				
+				Label addedLabel = new Label();
+				addedLabel.setPadding(new Insets(20, 20, 20, 20));
 				addedLabel.setAlignment(Pos.CENTER);
-				Group group = new Group(checkPart1, checkPart2);
-				VBox addedVBox = new VBox(group, addedLabel, closeButton);
+				
+				VBox addedVBox = new VBox();
+				
+				if(tempToppingsList.size() != 0) {
+					pizzaCounter++;
+					pizzaCart.add(new Pizza(pizzaCounter,tempToppingsList));
+
+					//Check Symbol
+					Line checkPart1 = new Line();
+					checkPart1.setStartX(50);
+					checkPart1.setStartY(75);
+					checkPart1.setEndX(75);
+					checkPart1.setEndY(100);
+					checkPart1.setStroke(Color.GREEN);
+					checkPart1.setStrokeWidth(5);
+					Line checkPart2 = new Line();
+					checkPart2.setStartX(75);
+					checkPart2.setStartY(100);
+					checkPart2.setEndX(125);
+					checkPart2.setEndY(40);
+					checkPart2.setStroke(Color.GREEN);
+					checkPart2.setStrokeWidth(5);
+					addedLabel = new Label("Pizza Added to the Cart!");
+					Group group = new Group(checkPart1, checkPart2);
+					addedVBox = new VBox(group, addedLabel, closeButton);
+				}else {
+					addedLabel = new Label("Please select atleast one topping");
+					addedVBox = new VBox(addedLabel, closeButton);
+				}
+				
 				addedVBox.setAlignment(Pos.CENTER);
 				Scene added = new Scene(addedVBox , 200, 200);
 				Stage addedWindow = new Stage();
@@ -311,26 +365,26 @@ public class GUI extends Application {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				
-			
-				
-				for (int i = 0; i < 10; i++) {
-					toppingsSelected[i] = toppingList.get(i).isSelected();
-					System.out.println("#" + i + " " + toppingList.get(i).isSelected() + " ");
-				}
+				String pizzasInCart = "";
+				HBox cartHb;
 				VBox vbox1 = new VBox();
-
-				Label label = new Label("You Selected a Pizza With: \n\n");
-				HBox cartHb = new HBox(label);
-				vbox1.getChildren().add(cartHb);
-				for (CheckBox b : toppingList) {
-					if (b.isSelected() == true) {
-						Label toppingLabel = new Label();
-						toppingLabel.setText(b.getText());
-						vbox1.getChildren().add(toppingLabel);
+				
+				//If Cart isn't empty, display Pizzas
+				if(pizzaCart.size() != 0) {
+					cartHb = new HBox(new Label("You've Selected the following pizzas: \n\n"));
+					vbox1.getChildren().add(cartHb);
+					
+					for(Pizza pizza : pizzaCart) {
+						pizzasInCart += pizza.toString() + "\n";
 					}
+					vbox1.getChildren().add(new Label(pizzasInCart));
+				}else {
+					cartHb = new HBox(new Label("Cart is empty \n\n"));
+					vbox1.getChildren().add(cartHb);
 				}
 
+				
+				
 				Button confirmButton = new Button("Confirm Purchase");
 				Button cancelButton = new Button("Cancel");
 				cancelButton.setCancelButton(true);
@@ -350,10 +404,12 @@ public class GUI extends Application {
 				confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
+						pizzaCounter = 0;
 						
 						//Adding Pizzas to the Map
 						try {
 							Orders.addCompleteOrder(cust.getUsername(), pizzaCart);
+							pizzaCart = new ArrayList<Pizza>();
 							}catch(IOException e1) {
 								System.out.println(e1.toString());
 							}catch(OrderNotFoundException e2) {

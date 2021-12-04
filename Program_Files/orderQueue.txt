@@ -2,3 +2,9 @@ Customer ID: JSmith78Date and Time of Order: 03/12/2021 21:18:42, Total Price $0
 Customer ID: JSmith78Date and Time of Order: 03/12/2021 21:23:34, Total Price $12.5, Number of Pizzas: 1
 Customer ID: JSmith78, Date and Time of Order: 03/12/2021 21:25:57, Total Price $12.5, Number of Pizzas: 1
 Customer ID: JSmith78, Date and Time of Order: 03/12/2021 21:29:05, Total Price $36.0, Number of Pizzas: 3
+Customer ID: JSmith78, Date and Time of Order: 03/12/2021 23:13:29, Total Price $12.0, Number of Pizzas: 1
+Customer ID: JSmith78, Date and Time of Order: 03/12/2021 23:59:48, Total Price $26.0, Number of Pizzas: 2
+Customer ID: JSmith78, Date and Time of Order: 04/12/2021 00:43:16, Total Price $25.5, Number of Pizzas: 2
+Customer ID: JSmith78, Date and Time of Order: 04/12/2021 01:11:07, Total Price $0.0, Number of Pizzas: 0
+Customer ID: JSmith78, Date and Time of Order: 04/12/2021 02:09:00, Total Price $24.5, Number of Pizzas: 2
+Customer ID: JSmith78, Date and Time of Order: 04/12/2021 02:10:44, Total Price $24.5, Number of Pizzas: 2

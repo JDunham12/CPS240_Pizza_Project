@@ -73,13 +73,13 @@ public class Orders {
 	 *                                has the matching orderNumber that is being
 	 *                                searched for.
 	 */
-	static public Map.Entry<String, List<Pizza>> getOrder(String customerID) throws OrderNotFoundException, IOException {
-		checkForOrderFileStatus();
+	static public Map.Entry<String, List<Pizza>> getOrder(String customerID) {
+		//checkForOrderFileStatus();
 			for (Map.Entry<String, List<Pizza>> order : orderMap.entrySet()) {
 				if (order.getKey().equals(customerID))
 					return order;
 			}
-			throw new OrderNotFoundException(customerID);
+			return null;
 	}
 	
 	/**
@@ -223,7 +223,7 @@ public class Orders {
 	 * orderQueue. EX: if there are five orders that happened previously in the day,
 	 * then generateOfDayOrderNum would return 6.
 	 * 
-	 * @return The new "of day" order number.
+	 * @return The new "of day" order numb er.
 	 * @throws IOException
 	 * @throws FileNotFoundException
 	 * @throws NumberFormatException
