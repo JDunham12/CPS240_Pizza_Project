@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class GUI extends Application {
 //place holders
+	//added for fixin
+	Boolean useless = true;
 	Person cust;
 	Person emp;
 	String Customer = "C";
