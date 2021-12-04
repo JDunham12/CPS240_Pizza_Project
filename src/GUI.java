@@ -9,7 +9,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
-import java.io.IOException;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -96,9 +96,8 @@ public class GUI extends Application {
 //////////////////////////////////////////////////////////////////////////////////////////////	
 		Label Title = new Label("Return to_Sleep Pizza");
 		Label toppings = new Label("Select the Toppings You Would Like");
-		Button secondbutton = new Button("Button"), goToCartBt = new Button("Go To Cart"); 
+		Button cLogoutBt = new Button("Logout, Customer"), goToCartBt = new Button("Go To Cart"); 
 		Button addToCartBt = new Button("Add To Cart");Button removeFromCartBt = new Button("Undo Last Pizza");
-		secondbutton.setText("Logout, Customer");
 		CheckBox topping1 = new CheckBox("Cheese");
 		topping1.setPadding(new Insets(30, 20, 10, 20));
 		CheckBox topping2 = new CheckBox("Pepperoni");
@@ -129,7 +128,7 @@ public class GUI extends Application {
 		toppingList.add(topping8);
 		toppingList.add(topping9);
 		toppingList.add(topping10);
-		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, goToCartBt, secondbutton);
+		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, goToCartBt, cLogoutBt);
 		HBox hbox2 = new HBox();
 		VBox primaryLayout = new VBox();
 		VBox secondaryLayout = new VBox(topping1, topping2, topping3, topping4, topping5);
@@ -195,17 +194,22 @@ public class GUI extends Application {
 				});
 
 //Logs in as new account
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// 
 				newlog.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
+						
+						Customer newCustomer = new Customer(Main.getNextID(), ctf1.getText(), ctf2.getText(), ctf3.getText(), ctf4.getText(), ctf5.getText());
+						File file = new File("Program_Files\\PersonData.txt");
+						Main.addObjectToFile(newCustomer,file);
+						cust = newCustomer;
 						CreateWindow.close();
 						CAccess = true;
 						if (CAccess) {
 							stage.close();
 							CustomerWindow.show();
 
-							secondbutton.setOnAction(new EventHandler<ActionEvent>() {
+							cLogoutBt.setOnAction(new EventHandler<ActionEvent>() {
 								@Override
 								public void handle(ActionEvent event) {
 									label.setText("Welcome!");
@@ -404,7 +408,7 @@ public class GUI extends Application {
 					stage.close();
 					CustomerWindow.show();
 					
-					secondbutton.setOnAction(new EventHandler<ActionEvent>() {
+					cLogoutBt.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
 							label.setText("Welcome!");
@@ -510,8 +514,14 @@ public class GUI extends Application {
 							});
 
 							newlog.setOnAction(new EventHandler<ActionEvent>() {
+								
 								@Override
 								public void handle(ActionEvent event) {
+									Employee newEmployee = new Employee(Main.getNextID(),ctf3.getText(),ctf1.getText(), 
+											ctf2.getText(),ctf4.getText(),ctf5.getText(),ctf6.getText(),
+										Double.parseDouble(ctf7.getText()), cb.isSelected());
+								File file = new File("Program_Files\\PersonData.txt");
+								Main.addObjectToFile(newEmployee, file);
 									CreateWindow.close();
 								}
 							});
