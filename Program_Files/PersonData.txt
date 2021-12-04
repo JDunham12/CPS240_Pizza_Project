@@ -8,3 +8,6 @@ C100006:John Smith:JSmith78:Password:p sherman 42, wallaby way sydney:1234567890
 C100007:Joe Shmoe:xXJShmoeXx:password:p sherman 43 wallaby way sydney:1891230101
 C100008:C:c:P@ssword:The moon:8115552022
 E100009:Sam Mus:E:e:The moon:8115552022:Manager:20.0:5.0:false
+C100010:cust:omer:cust omer:1234 customer drive, customer city, CU:1234567890
+E100011:loyee:emp loyee:Emp:4321 employee Drive, Employee Towship, EM:9876543210:Cashier:3.3:0.0:true
+E100012:Name:Username:Password:Address:Phone Number:position:5.0:0.0:true
