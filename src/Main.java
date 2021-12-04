@@ -25,14 +25,6 @@ public class Main {
 		// calls method to collect data from given text document and populates given map
 		// with contents
 		loadPersonDatabase();
-		
-		//Handle this
-		try {
-			Orders.loadOrders();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 		// content to fill customer/employee database with
 		// must be added one at a time

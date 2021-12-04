@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class GUI extends Application {
 //place holders
@@ -143,7 +145,7 @@ public class GUI extends Application {
 		VBox tirtiaryLayout = new VBox(topping6, topping7, topping8, topping9, topping10);
 		hbox2.getChildren().addAll(secondaryLayout, tirtiaryLayout);
 		primaryLayout.getChildren().addAll(toppings, hbox2, carthbox);
-		Scene secondScene = new Scene(primaryLayout, 650, 450);
+		Scene secondScene = new Scene(primaryLayout, 800, 450);
 		primaryLayout.setAlignment(Pos.CENTER);
 		secondaryLayout.setAlignment(Pos.CENTER);
 		carthbox.setAlignment(Pos.CENTER);
@@ -278,6 +280,11 @@ public class GUI extends Application {
 			@Override
 			public void handle(ActionEvent arg0) {
 				
+				Label cancelHeaderLabel = new Label("Enter a order to remove:");
+				Label currentOrders = new Label(Orders.printCurrentUserOrders(cust.getUsername()));
+				TextField orderTF = new TextField();
+				
+				Button cancelOrderButton = new Button("Canel Order");
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
 				
@@ -287,20 +294,26 @@ public class GUI extends Application {
 				
 				VBox cancelVBox = new VBox();
 				
+				/*
 				if(Orders.getOrder(cust.getUsername()) != null) {
 					Orders.removeOrder(cust.getUsername());
 					cancelLabel = new Label("Previous Order Canceled");
 				}else {
 					cancelLabel = new Label("No previous orders");
 				}
+				*/
 				
-				cancelVBox = new VBox(cancelLabel, closeButton);
+				cancelVBox = new VBox(cancelHeaderLabel, currentOrders, orderTF, cancelLabel, cancelOrderButton, closeButton);
 				cancelVBox.setAlignment(Pos.CENTER);
 				Scene cancel = new Scene(cancelVBox , 200, 200);
 				Stage addedWindow = new Stage();
 				addedWindow.setScene(cancel);
 				addedWindow.show();
 				closeButton.setOnAction(e -> addedWindow.close());
+				cancelOrderButton.setOnAction(e -> {
+					Integer enteredOrderNum = Integer.parseInt(orderTF.getText().toString());
+					Orders.removeOrder(new Pair<Integer,String>(enteredOrderNum,cust.getUsername()));
+				});
 			}
 		});
 		
@@ -353,6 +366,7 @@ public class GUI extends Application {
 				}
 				
 				addedVBox.setAlignment(Pos.CENTER);
+				//Setting Scene/Stage
 				Scene added = new Scene(addedVBox , 200, 200);
 				Stage addedWindow = new Stage();
 				addedWindow.setScene(added);
@@ -379,13 +393,14 @@ public class GUI extends Application {
 						pizzasInCart += pizza.toString() + "\n";
 					}
 					vbox1.getChildren().add(new Label(pizzasInCart));
+				//If Cart is empty
 				}else {
 					cartHb = new HBox(new Label("Cart is empty \n\n"));
 					vbox1.getChildren().add(cartHb);
 				}
 
 				
-				
+				//Confirm Button
 				Button confirmButton = new Button("Confirm Purchase");
 				Button cancelButton = new Button("Cancel");
 				cancelButton.setCancelButton(true);
@@ -393,7 +408,8 @@ public class GUI extends Application {
 				cartHb.setAlignment(Pos.CENTER);
 				vbox1.setAlignment(Pos.CENTER);
 				Scene cartScene = new Scene(vbox1, 500, 500);
-
+				
+				//Setting Stage
 				Stage cartWindow = new Stage();
 				cartWindow.setTitle("Customer");
 				cartWindow.setScene(cartScene);
@@ -405,18 +421,23 @@ public class GUI extends Application {
 				confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
+						//Reseting Pizza Counter
 						pizzaCounter = 0;
 						
-						//Adding Pizzas to the Map
+						//Adding Pizzas as an order to orderMap
+						Orders.addCompleteOrder(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
+						String receipt;
+						try {
+							receipt = Orders.printOrderRecipt(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
+							System.out.println(receipt);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+						pizzaCart = new ArrayList<Pizza>();
 						
-							try {
-								Orders.addCompleteOrder(cust.getUsername(), pizzaCart);
-								pizzaCart = new ArrayList<Pizza>();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							
+
 						cartWindow.close();
 						Label thankYou = new Label("Thank You For Your Purchase!");
 						thankYou.setAlignment(Pos.CENTER);
