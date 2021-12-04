@@ -6,8 +6,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ public class Orders {
 	static File orderQueue = new File("Program_Files\\orderQueue.txt");
 
 	// Primary Map for holding Customer orders
-	static private Map<Integer, ArrayList<Pizza>> orderMap = new LinkedHashMap<>();
+	static private Map<String, List<Pizza>> orderMap = new LinkedHashMap<>();
 	static private FileWriter orderWriter;
 
 	/**
@@ -30,14 +32,16 @@ public class Orders {
 	 * @throws orderNotFoundException
 	 * @throws IOException
 	 */
-	static public void addCompleteOrder(Integer orderNumber, ArrayList<Pizza> pizzaList)
+	static public void addCompleteOrder(String customerID, List<Pizza> pizzaList)
 			throws IOException, OrderNotFoundException {
+		Entry<String, List<Pizza>> tempOrder = Map.entry(customerID,pizzaList);
+		
 		checkForOrderFileStatus();
-		if (!orderMap.containsKey(orderNumber)) {
-			orderMap.put(orderNumber, pizzaList);
-			addOrderToFile(orderNumber);
+		if (!orderMap.containsKey(customerID)) {
+			orderMap.put(customerID, pizzaList);
+			addOrderToFile(tempOrder);
 		} else
-			System.out.println("Order #" + orderNumber + " already exists.");
+			System.out.println("Order #" + customerID + " already exists.");
 	}
 
 	/**
@@ -48,7 +52,7 @@ public class Orders {
 	 * @throws orderNotFoundException
 	 * @throws IOException
 	 */
-	static public void removeOrder(Integer orderNumber) throws IOException, OrderNotFoundException {
+	static public void removeOrder(String orderNumber) throws IOException, OrderNotFoundException {
 	 if(checkForOrderFileStatus().equals("correct")) {
 		 if (orderMap.containsKey(orderNumber))
 				orderMap.remove(orderNumber);
@@ -69,15 +73,15 @@ public class Orders {
 	 *                                has the matching orderNumber that is being
 	 *                                searched for.
 	 */
-	static public Map.Entry<Integer, ArrayList<Pizza>> getOrder(int orderNumber) throws OrderNotFoundException, IOException {
+	static public Map.Entry<String, List<Pizza>> getOrder(String customerID) throws OrderNotFoundException, IOException {
 		checkForOrderFileStatus();
-			for (Map.Entry<Integer, ArrayList<Pizza>> order : orderMap.entrySet()) {
-				if (order.getKey() == orderNumber)
+			for (Map.Entry<String, List<Pizza>> order : orderMap.entrySet()) {
+				if (order.getKey().equals(customerID))
 					return order;
 			}
-			throw new OrderNotFoundException(orderNumber);
+			throw new OrderNotFoundException(customerID);
 	}
-
+	
 	/**
 	 * Adds a pizza to a specific order in orderMap.
 	 * 
@@ -88,7 +92,7 @@ public class Orders {
 	 *                                has the matching orderNumber that is being
 	 *                                searched for.
 	 */
-	static public void addPizzaToOrder(Integer orderNumber, Pizza addedPizza)
+	static public void addPizzaToOrder(String orderNumber, Pizza addedPizza)
 			throws OrderNotFoundException, IOException {
 		if (checkForOrderFileStatus().equals("correct")) {
 			if (orderMap.containsKey(orderNumber))
@@ -109,7 +113,7 @@ public class Orders {
 	 *                                has the matching orderNumber that is being
 	 *                                searched for.
 	 */
-	static public void removePizzaFromOrder(Integer orderNumber, Pizza removedPizza)
+	static public void removePizzaFromOrder(String orderNumber, Pizza removedPizza)
 			throws OrderNotFoundException, IOException {
 		if (checkForOrderFileStatus().equals("correct")) {
 			if (orderMap.containsKey(orderNumber))
@@ -127,19 +131,24 @@ public class Orders {
 	 * @throws IOException
 	 * @throws orderNotFoundException
 	 */
-	static public void addOrderToFile(int orderNum) throws IOException, OrderNotFoundException {
+	
+	static public void addOrderToFile(Entry<String, List<Pizza>> newOrder) throws IOException, OrderNotFoundException {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		Date orderDate = new Date();
+		int pizzaCount = 0;
+		
 		checkForOrderFileStatus();
-		Entry<Integer, ArrayList<Pizza>> tempOrder = getOrder(orderNum);
 
 		orderWriter = new FileWriter("Program_Files\\orderQueue.txt", true);
-		orderWriter.write("Order of the day: " + generateOfDayOrderNum() + ", Customer ID: " + tempOrder.getKey()
-				+ ", Total Price $" + getOrderTotalCost(tempOrder) + ", Pizzas: ");
-		for (Pizza pizza : tempOrder.getValue()) {
-			orderWriter.write(pizza.getPizzaName() + ", ");
+		orderWriter.write("Customer ID: " + newOrder.getKey() + ", Date and Time of Order: " + formatter.format(orderDate)
+				+ ", Total Price $" + getOrderTotalCost(newOrder) + ", Number of Pizzas: ");
+		for (Pizza pizza : newOrder.getValue()) {
+			pizzaCount++;
 		}
-		orderWriter.write("\n");
+		orderWriter.write(pizzaCount + "\n");
 		orderWriter.close();
 	}
+
 
 	/**
 	 * COME BACK IF TIME
@@ -170,7 +179,7 @@ public class Orders {
 		}
 
 		if (allLines.size() == count) {
-			throw new OrderNotFoundException(orderNumber);
+			//throw new OrderNotFoundException(orderNumber);
 		}
 
 		clearOrderFile();
@@ -219,6 +228,7 @@ public class Orders {
 	 * @throws FileNotFoundException
 	 * @throws NumberFormatException
 	 */
+	/*
 	static public int generateOfDayOrderNum() throws NumberFormatException, FileNotFoundException, IOException {
 		checkForOrderFileStatus();
 
@@ -237,16 +247,18 @@ public class Orders {
 		return Integer.parseInt(String.valueOf(orderInformation.get(0).substring(18, orderInformation.get(0).length())))
 				+ 1;
 	}
-
+	*/
+	
+	
 	/**
 	 * Tallies up and returns the total cost of all Pizzas in an order.
 	 * 
 	 * @return - Total cost of all Pizzas on the order.
 	 */
-	static public double getOrderTotalCost(Map.Entry<Integer, ArrayList<Pizza>> order) {
+	static public double getOrderTotalCost(Map.Entry<String, List<Pizza>> order) {
 		double totalCost = 0;
 		for (Pizza pizza : order.getValue()) {
-			totalCost += pizza.getPrice();
+			totalCost += pizza.getTotalPrice();
 		}
 		return totalCost;
 	}
@@ -262,6 +274,7 @@ public class Orders {
 	 *                                has the matching orderNumber that is being
 	 *                                searched for.
 	 */
+	/*
 	static public void printOrderRecipt(int orderNumber) throws IOException, OrderNotFoundException {
 		Map.Entry<Integer, ArrayList<Pizza>> tempOrder = getOrder(orderNumber);
 		if (tempOrder != null) {
@@ -278,14 +291,14 @@ public class Orders {
 			orderWriter.close();
 		}
 	}
-
+*/
 	// Save Method In Case it's needed
 
 }
 
 //To Do: Figure out how to handle exception? 
 class OrderNotFoundException extends Exception {
-	public OrderNotFoundException(int orderNumber) {
-		super("Order: " + orderNumber + ", could not be found.");
+	public OrderNotFoundException(String customerID) {
+		super("Order with Customer ID: " + customerID + ", could not be found.");
 	}
 }

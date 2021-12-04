@@ -9,7 +9,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
+<<<<<<< HEAD
 import java.io.File;
+=======
+import java.io.IOException;
+>>>>>>> branch 'master' of https://github.com/gitgud115/CPS240_Pizza_Project.git
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,10 +36,12 @@ public class GUI extends Application {
 			"Anchovies", "Chicken" };
 	Boolean[] toppingsSelected = { false, false, false, false, false, false, false, false, false, false };
 	List<CheckBox> toppingList = new ArrayList<CheckBox>();
+	List<Pizza> pizzaCart = new ArrayList<Pizza>();
 	String punchOutTime = "";
 	String punchInTime = "";
 	TextField tf1;
 	TextField tf2;
+	int pizzaCounter;
 	boolean CAccess, EAccess = false;
 
 	@Override
@@ -254,10 +260,20 @@ public class GUI extends Application {
 		addToCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
+				//Creating new PizzaC
+				ArrayList<String> tempToppingsList = new ArrayList<String>();
+				
 				for(CheckBox cb: toppingList) {
+					if(cb.isSelected())
+						tempToppingsList.add(cb.getText().toString());
 					cb.setSelected(false);
 				}
+				
+				pizzaCart.add(new Pizza(pizzaCounter,tempToppingsList));
+				
 				Line checkPart1 = new Line();
+				
 				checkPart1.setStartX(50);
 				checkPart1.setStartY(75);
 				checkPart1.setEndX(75);
@@ -290,8 +306,12 @@ public class GUI extends Application {
 //Displays cart contents
 ////////////////////////////////////////////////////////////////////////////////////////////////
 		goToCartBt.setOnAction(new EventHandler<ActionEvent>() {
+			
 			@Override
 			public void handle(ActionEvent event) {
+				
+			
+				
 				for (int i = 0; i < 10; i++) {
 					toppingsSelected[i] = toppingList.get(i).isSelected();
 					System.out.println("#" + i + " " + toppingList.get(i).isSelected() + " ");
@@ -328,6 +348,16 @@ public class GUI extends Application {
 				confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
+						
+						//Adding Pizzas to the Map
+						try {
+							Orders.addCompleteOrder(cust.getUsername(), pizzaCart);
+							}catch(IOException e1) {
+								System.out.println(e1.toString());
+							}catch(OrderNotFoundException e2) {
+								System.out.println(e2.toString());
+							}
+						
 						cartWindow.close();
 						Label thankYou = new Label("Thank You For Your Purchase!");
 						thankYou.setAlignment(Pos.CENTER);
