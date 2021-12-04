@@ -9,11 +9,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.stage.*;
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import java.io.File;
-=======
+//=======
 import java.io.IOException;
->>>>>>> branch 'master' of https://github.com/gitgud115/CPS240_Pizza_Project.git
+//>>>>>>> branch 'master' of https://github.com/gitgud115/CPS240_Pizza_Project.git
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
