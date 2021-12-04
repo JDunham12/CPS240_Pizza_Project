@@ -1,76 +1,63 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-public class Pizza implements Comparable<Pizza> {
+public class Pizza {
 
-	private double price;
-	private int size;
-	private String name;
-	private String crust;
-	private String sauce;
-	private List<String> toppings;
+	private double totalPrice;
+	private int pizzaNumber;
+	private List<String> pizzaToppings;
 
 	// Default Constructor
 	public Pizza() {
-		toppings = new ArrayList<String>();
+		pizzaToppings = new ArrayList<String>();
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public int getPizzaNumber() {
+		return pizzaNumber;
+	}
+
+	public void setPizzaNumber(int pizzaNumber) {
+		this.pizzaNumber = pizzaNumber;
 	}
 
 	// Constructor w/ all parameters except toping list
-	public Pizza(String name, int size, double price, String crust, String sauce) {
-		this.name = name;
-		this.size = size;
-		this.price = price;
-		this.crust = crust;
-		this.sauce = sauce;
-		this.toppings = new ArrayList<String>();
-	}
-
-	// Constructor w/ Parameters
-	public Pizza(String name, int size, double price, String crust, String sauce, List<String> toppings) {
-		this.name = name;
-		this.size = size;
-		this.price = price;
-		this.crust = crust;
-		this.sauce = sauce;
-		this.toppings = toppings;
+	public Pizza(int pizzaNumber, List<String> pizzaToppings) {
+		this.pizzaNumber = pizzaNumber;
+		this.pizzaToppings = pizzaToppings;
+		this.totalPrice = calculateTotalPrice(pizzaToppings);
 	}
 
 	public void addTopping(String topping) {
-		this.toppings.add(topping);
+		this.pizzaToppings.add(topping);
 	}
 
 	public void addListOfToppings(List<String> toppings) {
-		this.toppings.addAll(toppings);
-	}
-
-	public String getPizzaName() {
-		return this.name;
+		this.pizzaToppings.addAll(toppings);
 	}
 	
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	@Override
-	public int compareTo(Pizza o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double calculateTotalPrice(List<String> newPizzaToppings) {
+		//Base price of $10
+		double pizzaPrice = 10;
+		//Add 50 cents per topping
+		for(String topping: newPizzaToppings) {
+			pizzaPrice = (!topping.equals("Cheese")) ? (pizzaPrice + 0.5)  : pizzaPrice ;
+		}
+		return pizzaPrice;		
 	}
 
 	@Override
 	public String toString() {
-		String finalString = "Pizza: " + this.name + "\n" + "Size : " + this.size + "\n" + "Crust: " + this.crust + "\n"
-				+ "Sauce: " + this.sauce + "\n" + "Toppings:\n";
-		for (String topping : toppings) {
-				finalString += "     - " + topping + "\n";
-		}
-		finalString += "Price: " + this.price;
-
+		String finalString = "Pizza Number: " + this.pizzaNumber + ", Pizza Price: $" + this.totalPrice + ", Toppings: ";
+		for(String topping : pizzaToppings)
+			finalString += topping + ", "; 
 		return finalString;
 	}
 }

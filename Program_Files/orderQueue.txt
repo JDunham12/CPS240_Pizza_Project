@@ -1,5 +1,4 @@
-Order of the day: 2, Customer ID: 223, Total Price $63.2, Pizzas: t1, t2, t3, 
-Order of the day: 4, Customer ID: 223, Total Price $63.2, Pizzas: t1, t2, t3, 
-Order of the day: 5, Customer ID: 2323, Total Price $63.2, Pizzas: t1, t2, t3, 
-Order of the day: 6, Customer ID: 2323, Total Price $63.2, Pizzas: t1, t2, t3, 
-Order of the day: 7, Customer ID: 2323, Total Price $63.2, Pizzas: t1, t2, t3, 
+Customer ID: JSmith78Date and Time of Order: 03/12/2021 21:18:42, Total Price $0.0, Number of Pizzas: 1
+Customer ID: JSmith78Date and Time of Order: 03/12/2021 21:23:34, Total Price $12.5, Number of Pizzas: 1
+Customer ID: JSmith78, Date and Time of Order: 03/12/2021 21:25:57, Total Price $12.5, Number of Pizzas: 1
+Customer ID: JSmith78, Date and Time of Order: 03/12/2021 21:29:05, Total Price $36.0, Number of Pizzas: 3
