@@ -16,7 +16,16 @@ public class Employee extends Person {
 		this.yearToDateHours = 0.0;
 		this.isFullTime = true;
 	}
-
+	// Constructor w/ Parameters
+		public Employee(String lastID, String name, String username, String password, String address, String phoneNumber,
+				String position, double wage, boolean isFullTime) {
+			super(name, username, password, address, phoneNumber);
+			this.position = position;
+			this.wage = wage;
+			yearToDateHours = 0;
+			this.isFullTime = isFullTime;
+			this.employeeID = "E" + (Integer.parseInt(lastID) + 1);
+		}
 	// Constructor w/ Parameters
 	public Employee(String lastID, String name, String username, String password, String address, String phoneNumber,
 			String position, double wage, double yearToDateHours, boolean isFullTime) {
