@@ -18,6 +18,8 @@ public class Main {
 	static List<List<String>> punchDatabase = new ArrayList<List<String>>();
 	static File personFile = new File("Program_Files\\PersonData.txt");
 	static File punchFile = new File("Program_Files\\PunchData.txt");
+	static boolean empFound = false;
+	
 
 	public static void main(String[] args) {
 
@@ -28,11 +30,6 @@ public class Main {
 
 		// calls method to collect data from given text document and populates given map
 		// with contents
-		loadPersonDatabase();
-		loadPunchDatabase();
-
-		// content to fill customer/employee database with
-		// must be added one at a time
 		Customer cust1 = new Customer(getNextID(), "John Smith", "JSmith78", "Password",
 				"p sherman 42, wallaby way sydney", "1234567890");
 		Customer cust2 = new Customer(getNextID(), "Joe Shmoe", "xXJShmoeXx", "password",
@@ -48,6 +45,16 @@ public class Main {
 				"8115552022", "Manager", 20.00, 5, false);
 		Employee emp4 = new Employee(getNextID(), "Sam Mus", "E", "e", "The moon", "8115552022",
 				"Manager", 20.00, 5, false);
+		
+		loadPersonDatabase();
+		if(!empFound) {
+			addObjectToFile(emp4, personFile);
+		}
+		loadPunchDatabase();
+
+		// content to fill customer/employee database with
+		// must be added one at a time
+		
 		// System.out.println(cust1);
 
 		// uncomment any line below to add any of the above objects to text document
@@ -97,7 +104,7 @@ public class Main {
 																// object as value
 				System.out.println("added customer from file to map"); // used to indicate that addition succeeds
 			} else if (ln[0].charAt(0) == 'E') { // determines if line in persondata.txt is an employee by number of
-													// elements
+				empFound = true;						// elements
 				Employee emp = null;
 				if (ln[9].equalsIgnoreCase("True")) { // full time employees
 					emp = new Employee(getNextID(), ln[1], ln[2], ln[3], ln[4], ln[5], ln[6],
@@ -177,15 +184,15 @@ public class Main {
 
 	public static String checkLoginCredentials(String u, String p) {
 		for (String s : personDatabase.keySet()) {
-			if (u.compareTo(personDatabase.get(s).getUsername()) == 0) {
-				if (p.compareTo(personDatabase.get(s).getPassword()) == 0) {
+			if (u.equals(personDatabase.get(s).getUsername())) {
+				if (p.equals(personDatabase.get(s).getPassword())) {
 					return s;
 				} else {
 					System.out.println("wrong password");
 				}
 			}
 		}
-		return u + "" + p;
+		return null;
 	}
 
 	public static void createFile(File f) { // creates a file based on location, name and type of f (txt)
