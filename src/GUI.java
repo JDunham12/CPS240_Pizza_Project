@@ -23,15 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class GUI extends Application {
-//place holders
-	//added for fixin
-	Boolean useless = true;
-	Person cust;
-	Person emp;
-	String Customer = "C";
-	String Employee = "E";
-	String CPass = "c";
-	String EPass = "e";
+	Customer cust;
+	Employee emp;
 	Boolean loginResult = false;
 	String[] menuitems = { "Cheese", "Pepperoni", "Green Peppers", "Onions", "Olives", "Sausage", "Ham", "Pineapple",
 			"Anchovies", "Chicken" };
@@ -56,9 +49,12 @@ public class GUI extends Application {
 		Button loginButton = new Button("Login");
 		Button quit = new Button("Exit");
 		Button create = new Button("Create new account");
+		Button showPunches = new Button("Show Punches");
 		Label label = new Label("Welcome!");
 		Label label1 = new Label("Username:");
 		Label label2 = new Label("Password:");
+		Label cancelHeaderLabel = new Label("No orders to be removed");
+		Label newacc = new Label("Please create a new username and password");
 		tf1 = new TextField(); 
 		tf2 = new TextField();
 		HBox hbox = new HBox(20, quit, create, loginButton);
@@ -78,9 +74,15 @@ public class GUI extends Application {
 ////////////////////////////////////////////////////////////////////////////////////////////		
 		TextField ctf1 = new TextField(), ctf2 = new TextField(), ctf3 = new TextField(), ctf4 = new TextField(),
 				ctf5 = new TextField();
+		TextField etf1 = new TextField(), etf2 = new TextField(), etf3 = new TextField(),
+				etf4 = new TextField(), etf5 = new TextField(), etf6 = new TextField(),
+				etf7 = new TextField();
+		Button goBack = new Button("Return to login");
+		Button newEmp = new Button("Create new employee");
+		CheckBox cb = new CheckBox();
 		Button logreturn = new Button("Return to login");
 		Button newlog = new Button("Create and login");
-		Label newacc = new Label("Please create a new username and password");
+		Label newEmployeeLabel = new Label("Please create a new username and password");
 		Label newacc1 = new Label("Username:"), newacc2 = new Label("Password:"), newacc3 = new Label("Name:"),
 				newacc4 = new Label("Address:"), newacc5 = new Label("Phone Number:");
 		ctf1.setMaxWidth(240);
@@ -103,6 +105,7 @@ public class GUI extends Application {
 //Customer Window
 //////////////////////////////////////////////////////////////////////////////////////////////	
 		Label Title = new Label("Return to_Sleep Pizza");
+		Title.setFont(new Font("Times New Roman", 32));
 		Label toppings = new Label("Select the Toppings You Would Like");
 		Button cLogoutBt = new Button("Logout, Customer"), goToCartBt = new Button("Go To Cart"); 
 		Button addToCartBt = new Button("Add To Cart");Button removeFromCartBt = new Button("Undo Last Pizza");
@@ -137,14 +140,18 @@ public class GUI extends Application {
 		toppingList.add(topping8);
 		toppingList.add(topping9);
 		toppingList.add(topping10);
-		HBox carthbox = new HBox(10, Title, addToCartBt, removeFromCartBt, cancelOrderBt, goToCartBt, cLogoutBt);
+		for(int i = 0; i < toppingList.size(); i++) {
+			toppingList.get(i).setSelected(false);
+		}
+		toppingList.get(0).setSelected(true);
+		HBox carthbox = new HBox(10, addToCartBt, removeFromCartBt, cancelOrderBt, goToCartBt, cLogoutBt);
 
 		HBox hbox2 = new HBox();
 		VBox primaryLayout = new VBox();
 		VBox secondaryLayout = new VBox(topping1, topping2, topping3, topping4, topping5);
 		VBox tirtiaryLayout = new VBox(topping6, topping7, topping8, topping9, topping10);
 		hbox2.getChildren().addAll(secondaryLayout, tirtiaryLayout);
-		primaryLayout.getChildren().addAll(toppings, hbox2, carthbox);
+		primaryLayout.getChildren().addAll(Title, toppings, hbox2, carthbox);
 		Scene secondScene = new Scene(primaryLayout, 800, 450);
 		primaryLayout.setAlignment(Pos.CENTER);
 		secondaryLayout.setAlignment(Pos.CENTER);
@@ -155,11 +162,16 @@ public class GUI extends Application {
 		CustomerWindow.setTitle("Customer");
 		CustomerWindow.setScene(secondScene);
 		stage.centerOnScreen();
+		Stage newEmpWindow = new Stage();
 
 //Employee window
 ////////////////////////////////////////////////////////////////////////////////////////////////		
 		Button elogout = new Button(), punchIn = new Button(), punchOut = new Button(), ecreate = new Button();
 		Label punchLabel = new Label();
+		Label motivation1 = new Label("Get To Work");
+		Label motivation2 = new Label ("Those Pizza's Aren't Going to Make Themselves");
+		motivation1.setAlignment(Pos.CENTER);
+		motivation2.setAlignment(Pos.CENTER);
 		punchLabel.setText("");
 		elogout.setText("Logout, Employee");
 		punchIn.setText("Punch \nIn");
@@ -169,9 +181,9 @@ public class GUI extends Application {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
 		date.setText(dtf.format(now));
-		HBox punchin_punchout = new HBox(20, punchIn, punchOut, ecreate);
+		HBox punchin_punchout = new HBox(20, punchIn, punchOut, ecreate, showPunches);
 		VBox Layout = new VBox(20);
-		Layout.getChildren().addAll(punchLabel, punchin_punchout, elogout, date);
+		Layout.getChildren().addAll(motivation1, motivation2, punchLabel, punchin_punchout, elogout, date);
 		Layout.setAlignment(Pos.CENTER);
 		punchin_punchout.setAlignment(Pos.CENTER);
 		Scene empScene = new Scene(Layout, 650, 450);
@@ -194,8 +206,6 @@ public class GUI extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						label.setText("Welcome!");
-						tf1.setText("");
-						tf2.setText("");
 						CAccess = false;
 						EAccess = false;
 						CreateWindow.close();
@@ -203,15 +213,17 @@ public class GUI extends Application {
 					}
 				});
 
-//Logs in as new account
+//Logs in as new Customer account
 //////////////////////////////////////////////////////////////////////////////// 
 				newlog.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
 						
-						Customer newCustomer = new Customer(Main.getNextID(), ctf1.getText(), ctf2.getText(), ctf3.getText(), ctf4.getText(), ctf5.getText());
+						Customer newCustomer = new Customer(Main.getNextID(), ctf3.getText(), ctf1.getText(), ctf2.getText(), ctf4.getText(), ctf5.getText());
+						ctf1.setText("");ctf2.setText("");ctf3.setText("");ctf4.setText("");ctf5.setText("");
 						File file = new File("Program_Files\\PersonData.txt");
 						Main.addObjectToFile(newCustomer,file);
+						Main.loadPersonDatabase();
 						cust = newCustomer;
 						CreateWindow.close();
 						CAccess = true;
@@ -242,28 +254,45 @@ public class GUI extends Application {
 			@Override
 			public void handle(ActionEvent event) {
 				Label undoLabel;
-				
+				Group group = new Group();
 				if(pizzaCart.size() == 0) {
 					undoLabel = new Label("Cart is empty");
+					Line X = new Line();
+					X.setStartX(25);
+					X.setStartY(25);
+					X.setEndX(75);
+					X.setEndY(75);
+					X.setStroke(Color.RED);
+					X.setStrokeWidth(10);
+					Line X2 = new Line();
+					X2.setStartX(25);
+					X2.setStartY(75);
+					X2.setEndX(75);
+					X2.setEndY(25);
+					X2.setStroke(Color.RED);
+					X2.setStrokeWidth(10);
+					group.getChildren().addAll(X, X2);
 				}else {
 					pizzaCart.remove(pizzaCart.size()-1);
 					undoLabel = new Label("Removed Last Pizza From Cart");
 					pizzaCounter--;
+					Line minus = new Line();
+					minus.setStartX(25);
+					minus.setStartY(75);
+					minus.setEndX(125);
+					minus.setEndY(75);
+					minus.setStroke(Color.RED);
+					minus.setStrokeWidth(10);
+					group.getChildren().add(minus);
 				}
 		
 				//Popup Screen Configs
-				Line minus = new Line();
-				minus.setStartX(25);
-				minus.setStartY(75);
-				minus.setEndX(125);
-				minus.setEndY(75);
-				minus.setStroke(Color.RED);
-				minus.setStrokeWidth(10);
+				
 				undoLabel.setPadding(new Insets(20, 20, 20, 20));
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
 				undoLabel.setAlignment(Pos.CENTER);
-				Group group = new Group(minus);
+				
 				VBox addedVBox = new VBox(group, undoLabel, closeButton);
 				addedVBox.setAlignment(Pos.CENTER);
 				
@@ -280,17 +309,24 @@ public class GUI extends Application {
 			@Override
 			public void handle(ActionEvent arg0) {
 				
-				Label cancelHeaderLabel = new Label("Enter a order to remove:");
 				Label currentOrders = new Label(Orders.printCurrentUserOrders(cust.getUsername()));
+				currentOrders.setAlignment(Pos.CENTER);
+				if(currentOrders.getText().isEmpty()) {
+					cancelHeaderLabel.setText("No orders to be removed");
+				}else {
+					cancelHeaderLabel.setText("Enter an order to remove:");
+				}
 				TextField orderTF = new TextField();
-				
+				orderTF.setAlignment(Pos.CENTER);
 				Button cancelOrderButton = new Button("Canel Order");
 				Button closeButton = new Button("Close");
-				closeButton.setPadding(new Insets(20, 20, 20, 20));
+				cancelOrderButton.setPadding(new Insets(10, 10, 10, 10));
+				closeButton.setPadding(new Insets(10, 20, 10, 20));
 				
 				Label cancelLabel = new Label();
 				cancelLabel.setPadding(new Insets(20, 20, 20, 20));
 				cancelLabel.setAlignment(Pos.CENTER);
+				closeButton.setAlignment(Pos.CENTER);
 				
 				VBox cancelVBox = new VBox();
 				
@@ -305,14 +341,24 @@ public class GUI extends Application {
 				
 				cancelVBox = new VBox(cancelHeaderLabel, currentOrders, orderTF, cancelLabel, cancelOrderButton, closeButton);
 				cancelVBox.setAlignment(Pos.CENTER);
-				Scene cancel = new Scene(cancelVBox , 200, 200);
+				ScrollPane cancelScrollPane = new ScrollPane(cancelVBox);
+				Scene cancel = new Scene(cancelScrollPane, 300, 300 );
 				Stage addedWindow = new Stage();
 				addedWindow.setScene(cancel);
 				addedWindow.show();
 				closeButton.setOnAction(e -> addedWindow.close());
 				cancelOrderButton.setOnAction(e -> {
-					Integer enteredOrderNum = Integer.parseInt(orderTF.getText().toString());
-					Orders.removeOrder(new Pair<Integer,String>(enteredOrderNum,cust.getUsername()));
+					if(orderTF.getText() != null && orderTF.getText().isEmpty() != true) {
+						try{
+							Integer enteredOrderNum = Integer.parseInt(orderTF.getText().toString());
+							Orders.removeOrder(new Pair<Integer,String>(enteredOrderNum,cust.getUsername()));
+							currentOrders.setText(Orders.printCurrentUserOrders(cust.getUsername()));
+						}catch(NumberFormatException nfe) {
+							cancelHeaderLabel.setText("Input must be a number");
+						}
+					}else {
+						cancelHeaderLabel.setText("Order number cannot be blank");
+					}
 				});
 			}
 		});
@@ -328,6 +374,7 @@ public class GUI extends Application {
 						tempToppingsList.add(cb.getText().toString());
 					cb.setSelected(false);
 				}
+				toppingList.get(0).setSelected(true);
 				
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
@@ -361,7 +408,7 @@ public class GUI extends Application {
 					Group group = new Group(checkPart1, checkPart2);
 					addedVBox = new VBox(group, addedLabel, closeButton);
 				}else {
-					addedLabel = new Label("Please select atleast one topping");
+					addedLabel = new Label("Please select at least one topping");
 					addedVBox = new VBox(addedLabel, closeButton);
 				}
 				
@@ -423,16 +470,18 @@ public class GUI extends Application {
 					public void handle(ActionEvent event) {
 						//Reseting Pizza Counter
 						pizzaCounter = 0;
-						
+						System.out.println(cust);
+						String receipt = "";
 						//Adding Pizzas as an order to orderMap
-						Orders.addCompleteOrder(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
-						String receipt;
-						try {
-							receipt = Orders.printOrderRecipt(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
-							System.out.println(receipt);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						if(cust != null) {
+							Orders.addCompleteOrder(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
+							
+							try {
+								receipt = Orders.printOrderRecipt(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
+								System.out.println(receipt);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 					
 						pizzaCart = new ArrayList<Pizza>();
@@ -440,10 +489,13 @@ public class GUI extends Application {
 
 						cartWindow.close();
 						Label thankYou = new Label("Thank You For Your Purchase!");
+						Label receiptLabel = new Label(receipt);
 						thankYou.setAlignment(Pos.CENTER);
 						Font font = new Font(50);
 						thankYou.setFont(font);
-						Scene purchaseScene = new Scene(thankYou, 700, 500);
+						VBox recieptVBox = new VBox(thankYou, receiptLabel);
+						ScrollPane receiptPane = new ScrollPane(recieptVBox);
+						Scene purchaseScene = new Scene(receiptPane, 700, 500);
 						Stage purchaseWindow = new Stage();
 						purchaseWindow.setTitle("Customer");
 						purchaseWindow.setScene(purchaseScene);
@@ -469,22 +521,26 @@ public class GUI extends Application {
 		loginButton.setOnAction(new EventHandler<ActionEvent>() {
 			
 			public void handle(ActionEvent event) {
+				Main.loadPersonDatabase();
 				String userID = "";
 				if (tf1.getText() != null && !tf1.getText().isEmpty() && tf2.getText() != null && !tf2.getText().isEmpty()) {
 					userID = Main.checkLoginCredentials(tf1.getText(), tf2.getText());
+				
+					if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
+							if(userID.charAt(0) == 'C') {
+								CAccess = true;
+								cust = (Customer) Main.personDatabase.get(userID);
+								System.out.println("cust assigned");
+							}else if (userID.charAt(0) == 'E') {
+								EAccess = true;
+								emp = (Employee) Main.personDatabase.get(userID);
+								System.out.println("emp assigned");
+							}
+					}else {
+						label.setText("Wrong Username and or Password");
+					}
 				}else {
 					label.setText("Empty TextField");
-				}
-				if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
-						if(userID.charAt(0) == 'C') {
-							CAccess = true;
-							cust = Main.personDatabase.get(userID);
-						}else if (userID.charAt(0) == 'E') {
-							EAccess = true;
-							emp = Main.personDatabase.get(userID);
-						}
-				}else {
-					label.setText("Wrong Username and or Password");
 				}
 //Opens Customers
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -495,6 +551,11 @@ public class GUI extends Application {
 					cLogoutBt.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
+							for(int i = 0; i < toppingList.size(); i++) {
+								toppingList.get(i).setSelected(false);
+							}
+							pizzaCart = new ArrayList<Pizza>();
+							toppingList.get(0).setSelected(true);
 							label.setText("Welcome!");
 							tf1.setText("");
 							tf2.setText("");
@@ -509,16 +570,24 @@ public class GUI extends Application {
 //Employee Screen
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				if (EAccess) {
+					
 					stage.close();
 					EmployeeWindow.show();
+					motivation1.setText("Get To Work");
+					motivation2.setText("Those Pizza's Aren't Going to Make Themselves");
+					punchLabel.setText("");
 					punchIn.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
 							SimpleDateFormat time_format = new SimpleDateFormat("hh:mm:ss");
 							Date date = new Date();
 							String current_time = time_format.format(date);
+							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+							LocalDateTime DateAndTime = LocalDateTime.now();
 							punchLabel.setText("Punched In At: " + current_time);
 							punchInTime = current_time;
+							File punchFile = new File("Program_Files\\PunchData.txt");
+							Main.addPunchToFile(emp.getEmployeeID() + ";Punched In;" +  dtf.format(DateAndTime), punchFile);
 						}
 					});
 					punchOut.setOnAction(new EventHandler<ActionEvent>() {
@@ -527,8 +596,41 @@ public class GUI extends Application {
 							SimpleDateFormat time_format = new SimpleDateFormat("hh:mm:ss");
 							Date date = new Date();
 							String current_time = time_format.format(date);
+							DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+							LocalDateTime DateAndTime = LocalDateTime.now();
 							punchLabel.setText("Punched In Out: " + current_time);
 							punchOutTime = current_time;
+							File punchFile = new File("Program_Files\\PunchData.txt");
+							Main.addPunchToFile(emp.getEmployeeID() + ";Punched Out;" +  dtf.format(DateAndTime), punchFile);
+						}
+					});
+					showPunches.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							Main.loadPunchDatabase();
+							Label punchLabel = new Label("Employee Punches");
+							punchLabel.setAlignment(Pos.CENTER);
+							Font font = new Font(30);
+							Label punches = new Label();
+							//System.out.println(Main.punchDatabase);
+							System.out.println(Main.punchDatabase.get(0).get(0));
+							for(List<String> l: Main.punchDatabase) {
+								for(String s: l) {
+									//temp += s;
+									System.out.println(s);
+									punches.setText(punches.getText() + s + " ");
+								}
+								punches.setText(punches.getText() + "\n");
+							}
+							punchLabel.setFont(font);
+							VBox PunchVBox = new VBox(punchLabel, punches);
+							ScrollPane punchPane = new ScrollPane(PunchVBox);
+							Scene punchScene = new Scene(punchPane, 400, 300);
+							Stage punchStage = new Stage();
+							punchStage.setTitle("Employee");
+							punchStage.setScene(punchScene);
+							stage.centerOnScreen();
+							punchStage.show();
 						}
 					});
 					
@@ -537,78 +639,93 @@ public class GUI extends Application {
 					ecreate.setOnAction(new EventHandler<ActionEvent>() {
 						@Override
 						public void handle(ActionEvent event) {
+							
 							// no longer closes previous window
-
 							//EmployeeWindow.close();
 							// Creates all the fields and buttons need for making a new account
-							TextField ctf1 = new TextField(), ctf2 = new TextField(), ctf3 = new TextField(),
-									ctf4 = new TextField(), ctf5 = new TextField(), ctf6 = new TextField(),
-									ctf7 = new TextField();
-							CheckBox cb = new CheckBox();
-							 //position, double wage, double yearToDateHours, boolean isFullTime
-							Button logreturn = new Button("Return to login");
-							Button newlog = new Button("Create new employee");
-							Label newacc = new Label("Please create a new username and password");
-							Label newacc1 = new Label("Username:"), newacc2 = new Label("Password:"),
-									newacc3 = new Label("Name:"), newacc4 = new Label("Address:"),
-									newacc5 = new Label("Phone Number:"), newacc6 = new Label("position:"),
-									newacc7 = new Label("wage:"), newacc8 = new Label("isFullTime:");
-							ctf1.setMaxWidth(240);
-							ctf2.setMaxWidth(240);
-							ctf3.setMaxWidth(240);
-							ctf4.setMaxWidth(240);
-							ctf5.setMaxWidth(240);
-							// Creates Hboxes and Vboxes for format the GUI
-							HBox hcreateLayout = new HBox(40, logreturn, newlog);
-							VBox vcreateLayout = new VBox(10, newacc1, ctf1, newacc2, ctf2, newacc3, ctf3,
-									newacc4, ctf4);
-							VBox vcreateSecondLayout = new VBox(10, newacc5, ctf5, newacc6, ctf6, newacc7, ctf7, newacc8, cb);
-							vcreateSecondLayout.setAlignment(Pos.CENTER);
-							vcreateLayout.getChildren().add(hcreateLayout);
-							vcreateSecondLayout.setPadding(new Insets(20, 20, 20, 20));
-							vcreateLayout.setPadding(new Insets(20, 20, 20, 20));
-							HBox fields = new HBox(vcreateLayout, vcreateSecondLayout);
-							fields.setAlignment(Pos.CENTER);
-							fields.setPadding(new Insets(20, 20, 20, 20));
-							VBox outerVbox = new VBox( newacc, fields, hcreateLayout);
-							outerVbox.setAlignment(Pos.CENTER);
-							Scene createScene = new Scene(outerVbox, 650, 450);
-							vcreateLayout.setAlignment(Pos.CENTER);
-							hcreateLayout.setAlignment(Pos.CENTER);
-							// Creates the window for making a new account
-							Stage CreateWindow = new Stage();
-							CreateWindow.setTitle("Create New Employee Account");
-							CreateWindow.setScene(createScene);
-							stage.centerOnScreen();
-							CreateWindow.show();
-
+							if(emp.getPosition().equals("Manager")) {
+								etf1.setText("");etf2.setText("");etf3.setText("");etf4.setText("");etf5.setText("");
+								etf6.setText("");etf7.setText("");
+								 //position, double wage, double yearToDateHours, boolean isFullTime
+								
+								Label newacc1 = new Label("Username:"), newacc2 = new Label("Password:"),
+										newacc3 = new Label("Name:"), newacc4 = new Label("Address:"),
+										newacc5 = new Label("Phone Number:"), newacc6 = new Label("position:"),
+										newacc7 = new Label("wage:"), newacc8 = new Label("isFullTime:");
+								etf1.setMaxWidth(240);
+								etf2.setMaxWidth(240);
+								etf3.setMaxWidth(240);
+								etf4.setMaxWidth(240);
+								etf5.setMaxWidth(240);
+								etf6.setMaxWidth(240);
+								etf7.setMaxWidth(240);
+								// Creates Hboxes and Vboxes for format the GUI
+								HBox hcreateLayout = new HBox(40, goBack, newEmp);
+								VBox vcreateLayout = new VBox(10, newacc1, etf1, newacc2, etf2, newacc3, etf3,
+										newacc4, etf4);
+								VBox vcreateSecondLayout = new VBox(10, newacc5, etf5, newacc6, etf6, newacc7, etf7, newacc8, cb);
+								vcreateSecondLayout.setAlignment(Pos.CENTER);
+								vcreateLayout.getChildren().add(hcreateLayout);
+								vcreateSecondLayout.setPadding(new Insets(20, 20, 20, 20));
+								vcreateLayout.setPadding(new Insets(20, 20, 20, 20));
+								HBox fields = new HBox(vcreateLayout, vcreateSecondLayout);
+								fields.setAlignment(Pos.CENTER);
+								fields.setPadding(new Insets(20, 20, 20, 20));
+								VBox outerVbox = new VBox( newEmployeeLabel, fields, hcreateLayout);
+								outerVbox.setAlignment(Pos.CENTER);
+								Scene createScene = new Scene(outerVbox, 650, 450);
+								vcreateLayout.setAlignment(Pos.CENTER);
+								hcreateLayout.setAlignment(Pos.CENTER);
+								// Creates the window for making a new account
+								newEmpWindow.setTitle("Create New Employee Account");
+								newEmpWindow.setScene(createScene);
+								stage.centerOnScreen();
+								newEmpWindow.show();
+							}else {
+								motivation1.setText("No");
+								motivation2.setText("Managers Only");
+							}
+						
 							// Returns the user from the create new account window to the login window
 
-							logreturn.setOnAction(new EventHandler<ActionEvent>() {
-								@Override
-								public void handle(ActionEvent event) {
-									label.setText("Welcome!");
-									tf1.setText("");
-									tf2.setText("");
-									CAccess = false;
-									EAccess = false;
-									CreateWindow.close();
-									stage.show();
-								}
-							});
+							
+						}
+					});
+					goBack.setOnAction(new EventHandler<ActionEvent>() {
+						@Override
+						public void handle(ActionEvent event) {
+							System.out.println("goBack ran");
+							label.setText("Welcome!");
+							tf1.setText("");
+							tf2.setText("");
+							CAccess = false;
+							EAccess = false;
+							newEmpWindow.close();
+						}
+					});
 
-							newlog.setOnAction(new EventHandler<ActionEvent>() {
-								
-								@Override
-								public void handle(ActionEvent event) {
-									Employee newEmployee = new Employee(Main.getNextID(),ctf3.getText(),ctf1.getText(), 
-											ctf2.getText(),ctf4.getText(),ctf5.getText(),ctf6.getText(),
-										Double.parseDouble(ctf7.getText()), cb.isSelected());
+					newEmp.setOnAction(new EventHandler<ActionEvent>() {
+						
+						@Override
+						public void handle(ActionEvent event) {
+							
+							try{
+								if(etf1.getText().isEmpty() == false && etf2.getText().isEmpty() == false &&
+									etf3.getText().isEmpty() == false &&etf4.getText().isEmpty() == false &&
+									etf5.getText().isEmpty() == false &&etf6.getText().isEmpty() == false &&
+									etf7.getText().isEmpty() == false) {
+								Employee newEmployee = new Employee(Main.getNextID(),etf3.getText(),etf1.getText(), 
+									etf2.getText(),etf4.getText(),etf5.getText(),etf6.getText(),
+								Double.parseDouble(etf7.getText()), cb.isSelected());
 								File file = new File("Program_Files\\PersonData.txt");
 								Main.addObjectToFile(newEmployee, file);
-									CreateWindow.close();
-								}
-							});
+								newEmpWindow.close();
+							}else {
+								newEmployeeLabel.setText("Must enter data in all fields");
+							}
+							}catch(NumberFormatException nfe) {
+								newEmployeeLabel.setText("Input for wage must be a number");
+							}
 						}
 					});
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////					
