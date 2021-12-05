@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,7 +15,9 @@ import java.util.Set;
 //test
 public class Main {
 	static Map<String, Person> personDatabase = new LinkedHashMap<String, Person>();
-	static File file = new File("Program_Files\\PersonData.txt");
+	static List<List<String>> punchDatabase = new ArrayList<List<String>>();
+	static File personFile = new File("Program_Files\\PersonData.txt");
+	static File punchFile = new File("Program_Files\\PunchData.txt");
 
 	public static void main(String[] args) {
 
@@ -25,6 +29,7 @@ public class Main {
 		// calls method to collect data from given text document and populates given map
 		// with contents
 		loadPersonDatabase();
+		loadPunchDatabase();
 
 		// content to fill customer/employee database with
 		// must be added one at a time
@@ -61,14 +66,15 @@ public class Main {
 	// files and db added
 	// fills given map with data from given : delimited text file
 	public static void loadPersonDatabase() {
+		personDatabase.clear();
 		Scanner input = null;
 		boolean success = false; // used to check to end while loop if file exists, or after creation
 		while (success != true) {
 			try {
-				input = new Scanner(file); // opens scanner to read file
+				input = new Scanner(personFile); // opens scanner to read file
 				success = true; // allows loop to end
 			} catch (FileNotFoundException fnfe) { // checks if file does not exist
-				createFile(file); // makes file if did not already exist
+				createFile(personFile); // makes file if did not already exist
 			}
 		}
 		int pageLineCounter = 0;
@@ -120,6 +126,36 @@ public class Main {
 		}
 		if (input != null) {
 			input.close(); // closes scanner if opened
+		}
+	}
+	public static void loadPunchDatabase() {
+		punchDatabase.clear();
+		Scanner input = null;
+		
+		boolean success = false; // used to check to end while loop if file exists, or after creation
+		while (success != true) {
+			try {
+				input = new Scanner(punchFile); // opens scanner to read file
+				success = true; // allows loop to end
+			} catch (FileNotFoundException fnfe) { // checks if file does not exist
+				createFile(punchFile); // makes file if did not already exist
+			}
+		}
+		// processes entire text document and makes employee and customer objects from
+		// each line of data then stores in database
+		while (input.hasNext()) { // runs until end of file is reached
+			List<String> punchLine = new ArrayList<String>();
+			String line = input.nextLine(); // advances to next lime and stores entire line in String "line"
+			String[] ln = line.split(";", 0); // splits line by colons and stores into ln array
+			for(int i = 0; i < ln.length; i++) {
+				//System.out.println(ln[i]);
+				punchLine.add(ln[i]);
+			}
+			System.out.println(punchLine);
+			punchDatabase.add(punchLine);
+		}
+		if(input != null) {
+			input.close();
 		}
 	}
 
@@ -179,7 +215,21 @@ public class Main {
 	 * o.getPosition() + ":" + o.getWage() + ":" + o.getYearToDateHours() + ":" +
 	 * o.getIsFullTime()); return s; }
 	 */
+	public static <E> void addPunchToFile(String s, File file) {
+		if (file.getPath().equals("Program_Files\\PunchData.txt")) {
+			try (FileWriter fw = new FileWriter(file, true);
+				BufferedWriter bw = new BufferedWriter(fw);
+				PrintWriter pw = new PrintWriter(bw);) {
+				pw.println(s); // uses toSting of Customer/Employee to write to add each line to
+				// the bottom of the text document
+				
+			} catch (IOException i) {
+				System.out.println("IO Exception");
+			}
+		}
+		
 
+	}
 	public static <E> void addObjectToFile(E e, File file) {
 		String s = "";
 		if (e instanceof Customer && file.getPath().equals("Program_Files\\PersonData.txt")) {
