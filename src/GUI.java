@@ -523,10 +523,11 @@ public class GUI extends Application {
 			public void handle(ActionEvent event) {
 				Main.loadPersonDatabase();
 				String userID = "";
-				if (tf1.getText() != null && !tf1.getText().isEmpty() && tf2.getText() != null && !tf2.getText().isEmpty()) {
+				if (tf1.getText() != null && !tf1.getText().isEmpty() && 
+						tf2.getText() != null && !tf2.getText().isEmpty()) {
 					userID = Main.checkLoginCredentials(tf1.getText(), tf2.getText());
-				
-					if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
+					if(userID != null) {
+						if (userID.charAt(0) == 'C' || userID.charAt(0) == 'E') {
 							if(userID.charAt(0) == 'C') {
 								CAccess = true;
 								cust = (Customer) Main.personDatabase.get(userID);
@@ -536,8 +537,12 @@ public class GUI extends Application {
 								emp = (Employee) Main.personDatabase.get(userID);
 								System.out.println("emp assigned");
 							}
+						}
+					
 					}else {
 						label.setText("Wrong Username and or Password");
+						CAccess = false;
+						EAccess = false;
 					}
 				}else {
 					label.setText("Empty TextField");
