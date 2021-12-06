@@ -77,7 +77,7 @@ public class GUI extends Application {
 		TextField etf1 = new TextField(), etf2 = new TextField(), etf3 = new TextField(),
 				etf4 = new TextField(), etf5 = new TextField(), etf6 = new TextField(),
 				etf7 = new TextField();
-		Button goBack = new Button("Return to login");
+		Button goBack = new Button("Close");
 		Button newEmp = new Button("Create new employee");
 		CheckBox cb = new CheckBox();
 		Button logreturn = new Button("Return to login");
