@@ -254,11 +254,16 @@ public class GUI extends Application {
 		});
 //Cart Window/Handler
 /////////////////////////////////////////////////////////////////////////////////////////////////
+		
+//Removing an order from the cart
+////////////////////////////////////////////////////////////////////////////////////////
 		removeFromCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Label undoLabel;
 				Group group = new Group();
+				
+				//If cart is empty
 				if(pizzaCart.size() == 0) {
 					undoLabel = new Label("Cart is empty");
 					Line X = new Line();
@@ -276,6 +281,7 @@ public class GUI extends Application {
 					X2.setStroke(Color.RED);
 					X2.setStrokeWidth(10);
 					group.getChildren().addAll(X, X2);
+				//Otherwise
 				}else {
 					pizzaCart.remove(pizzaCart.size()-1);
 					undoLabel = new Label("Removed Last Pizza From Cart");
@@ -291,7 +297,6 @@ public class GUI extends Application {
 				}
 		
 				//Popup Screen Configs
-				
 				undoLabel.setPadding(new Insets(20, 20, 20, 20));
 				Button closeButton = new Button("Close");
 				closeButton.setPadding(new Insets(20, 20, 20, 20));
@@ -309,17 +314,25 @@ public class GUI extends Application {
 			}
 		});
 		
+//Canceling a previous order
+////////////////////////////////////////////////////////////////////////////////////////
 		cancelOrderBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				
-				Label currentOrders = new Label(Orders.printCurrentUserOrders(cust.getUsername()));
+				//A label of the orders that a Customer has placed
+				Label currentOrders = new Label(Orders.printCurrentUserOrders(cust.getCustomerID()));
 				currentOrders.setAlignment(Pos.CENTER);
+				
+				//If there are no previous orders
 				if(currentOrders.getText().isEmpty()) {
 					cancelHeaderLabel.setText("No orders to be removed");
+				//Otherwise
 				}else {
 					cancelHeaderLabel.setText("Enter an order to remove:");
 				}
+				
+				//Configs for the cancelVBox 
 				TextField orderTF = new TextField();
 				orderTF.setAlignment(Pos.CENTER);
 				Button cancelOrderButton = new Button("Canel Order");
@@ -334,15 +347,6 @@ public class GUI extends Application {
 				
 				VBox cancelVBox = new VBox();
 				
-				/*
-				if(Orders.getOrder(cust.getUsername()) != null) {
-					Orders.removeOrder(cust.getUsername());
-					cancelLabel = new Label("Previous Order Canceled");
-				}else {
-					cancelLabel = new Label("No previous orders");
-				}
-				*/
-				
 				cancelVBox = new VBox(cancelHeaderLabel, currentOrders, orderTF, cancelLabel, cancelOrderButton, closeButton);
 				cancelVBox.setAlignment(Pos.CENTER);
 				ScrollPane cancelScrollPane = new ScrollPane(cancelVBox);
@@ -350,13 +354,17 @@ public class GUI extends Application {
 				Stage addedWindow = new Stage();
 				addedWindow.setScene(cancel);
 				addedWindow.show();
+				
+				//Closes the current stage and returns to the main menu
 				closeButton.setOnAction(e -> addedWindow.close());
+				//Removes the order corresponding with the number entered into orderTF
 				cancelOrderButton.setOnAction(e -> {
 					if(orderTF.getText() != null && orderTF.getText().isEmpty() != true) {
 						try{
 							Integer enteredOrderNum = Integer.parseInt(orderTF.getText().toString());
-							Orders.removeOrder(new Pair<Integer,String>(enteredOrderNum,cust.getUsername()));
-							currentOrders.setText(Orders.printCurrentUserOrders(cust.getUsername()));
+							//Searching and removing the order based on the enteredOrderNum and CustomerID Pair. 
+							Orders.removeOrder(new Pair<Integer,String>(enteredOrderNum,cust.getCustomerID()));
+							currentOrders.setText(Orders.printCurrentUserOrders(cust.getCustomerID()));
 						}catch(NumberFormatException nfe) {
 							cancelHeaderLabel.setText("Input must be a number");
 						}
@@ -367,12 +375,16 @@ public class GUI extends Application {
 			}
 		});
 		
+//Adding a pizza to the cart
+////////////////////////////////////////////////////////////////////////////////////////
 		addToCartBt.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				
+				//List used to contain the toppings that were selected by the user
 				ArrayList<String> tempToppingsList = new ArrayList<String>();
 				
+				//Collecting all selected toppings for the Pizza
 				for(CheckBox cb: toppingList) {
 					if(cb.isSelected())
 						tempToppingsList.add(cb.getText().toString());
@@ -389,6 +401,7 @@ public class GUI extends Application {
 				
 				VBox addedVBox = new VBox();
 				
+				//If the user selected atleast one topping, create the pizza and add it to the pizzaCart
 				if(tempToppingsList.size() != 0) {
 					pizzaCounter++;
 					pizzaCart.add(new Pizza(pizzaCounter,tempToppingsList));
@@ -411,12 +424,14 @@ public class GUI extends Application {
 					addedLabel = new Label("Pizza Added to the Cart!");
 					Group group = new Group(checkPart1, checkPart2);
 					addedVBox = new VBox(group, addedLabel, closeButton);
+				//Otherwise prompt user to select a topping
 				}else {
 					addedLabel = new Label("Please select at least one topping");
 					addedVBox = new VBox(addedLabel, closeButton);
 				}
 				
 				addedVBox.setAlignment(Pos.CENTER);
+				
 				//Setting Scene/Stage
 				Scene added = new Scene(addedVBox , 200, 200);
 				Stage addedWindow = new Stage();
@@ -425,6 +440,7 @@ public class GUI extends Application {
 				closeButton.setOnAction(e -> addedWindow.close());
 			}
 		});
+		
 //Displays cart contents
 ////////////////////////////////////////////////////////////////////////////////////////////////
 		goToCartBt.setOnAction(new EventHandler<ActionEvent>() {
@@ -435,7 +451,7 @@ public class GUI extends Application {
 				HBox cartHb;
 				VBox vbox1 = new VBox();
 				
-				//If Cart isn't empty, display Pizzas
+				//If Cart isn't empty, display Pizzas in pizzaCart
 				if(pizzaCart.size() != 0) {
 					cartHb = new HBox(new Label("You've Selected the following pizzas: \n\n"));
 					vbox1.getChildren().add(cartHb);
@@ -467,48 +483,66 @@ public class GUI extends Application {
 				stage.centerOnScreen();
 				cartWindow.show();
 				cancelButton.setOnAction(e -> cartWindow.close());
+				
 //Displays Receipt after Purchase
 ////////////////////////////////////////////////////////////////////////////////////////////				
 				confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						//Reseting Pizza Counter
-						pizzaCounter = 0;
-						System.out.println(cust);
 						String receipt = "";
-						//Adding Pizzas as an order to orderMap
-						if(cust != null) {
-							Orders.addCompleteOrder(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
+		
+						//If the Cart is not empty
+						if(!pizzaCart.isEmpty()){
 							
-							try {
-								receipt = Orders.printOrderRecipt(new Pair<Integer,String>(Orders.generateOrderNumber(cust.getUsername()),cust.getUsername()), pizzaCart);
-								System.out.println(receipt);
-							} catch (IOException e) {
-								e.printStackTrace();
+							if(cust != null) {
+								//Initializing a Pair to be assigned as the key to this order entry. 
+								Pair<Integer,String> customerPair = new Pair<Integer,String>(Orders.generateOrderNumber(), cust.getCustomerID());
+								
+								//Adding customerPair and pizzaCart to an order. 
+								Orders.addCompleteOrder(customerPair, pizzaCart);
+								
+								try {
+									//Printing the receipt of the associated order
+									receipt = Orders.printOrderRecipt(customerPair, pizzaCart);
+									//Creating a text file of the receipt
+									Orders.printOrderReciptToFile(customerPair, pizzaCart);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}finally{
+									//Reseting Pizza variables
+									pizzaCart = new ArrayList<Pizza>();
+									pizzaCounter = 0;
+								}
 							}
-						}
-					
-						pizzaCart = new ArrayList<Pizza>();
+							
+							//Configs for receipt window
+							cartWindow.close();
+							Label thankYou = new Label("Thank You For Your Purchase!");
+							Label receiptLabel = new Label(receipt);
+							thankYou.setAlignment(Pos.CENTER);
+							Font font = new Font(50);
+							thankYou.setFont(font);
+							VBox recieptVBox = new VBox(thankYou, receiptLabel);
+							ScrollPane receiptPane = new ScrollPane(recieptVBox);
+							
+							//Setting Scene/Stage
+							Scene purchaseScene = new Scene(receiptPane, 700, 500);
+							Stage purchaseWindow = new Stage();
+							purchaseWindow.setTitle("Customer");
+							purchaseWindow.setScene(purchaseScene);
+							stage.centerOnScreen();
+							purchaseWindow.show();	
 						
-
-						cartWindow.close();
-						Label thankYou = new Label("Thank You For Your Purchase!");
-						Label receiptLabel = new Label(receipt);
-						thankYou.setAlignment(Pos.CENTER);
-						Font font = new Font(50);
-						thankYou.setFont(font);
-						VBox recieptVBox = new VBox(thankYou, receiptLabel);
-						ScrollPane receiptPane = new ScrollPane(recieptVBox);
-						Scene purchaseScene = new Scene(receiptPane, 700, 500);
-						Stage purchaseWindow = new Stage();
-						purchaseWindow.setTitle("Customer");
-						purchaseWindow.setScene(purchaseScene);
-						stage.centerOnScreen();
-						purchaseWindow.show();
+						}
+						
+						//Reseting Pizza variables
+						pizzaCart = new ArrayList<Pizza>();
+						pizzaCounter = 0;
 					}
 				});
 			}
 		});
+		
 //Closes Default window and terminates program
 //////////////////////////////////////////////////////////////////////////////////
 		quit.setOnAction(new EventHandler<ActionEvent>() {
@@ -551,6 +585,7 @@ public class GUI extends Application {
 				}else {
 					label.setText("Empty TextField");
 				}
+				
 //Opens Customers
 //////////////////////////////////////////////////////////////////////////////////////////////////
 				if (CAccess) {
@@ -737,6 +772,7 @@ public class GUI extends Application {
 							}
 						}
 					});
+					
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////					
 //This event handles the use logging out and returns to the main screen
 					elogout.setOnAction(new EventHandler<ActionEvent>() {
