@@ -219,14 +219,18 @@ public class GUI extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 						
-						Customer newCustomer = new Customer(Main.getNextID(), ctf3.getText(), ctf1.getText(), ctf2.getText(), ctf4.getText(), ctf5.getText());
-						ctf1.setText("");ctf2.setText("");ctf3.setText("");ctf4.setText("");ctf5.setText("");
-						File file = new File("Program_Files\\PersonData.txt");
-						Main.addObjectToFile(newCustomer,file);
-						Main.loadPersonDatabase();
-						cust = newCustomer;
-						CreateWindow.close();
-						CAccess = true;
+						if(ctf1.getText().isEmpty() != true && ctf2.getText().isEmpty() != true && ctf3.getText().isEmpty() != true && ctf4.getText().isEmpty() != true && ctf5.getText().isEmpty() != true) {
+							Customer newCustomer = new Customer(Main.getNextID(), ctf3.getText(), ctf1.getText(), ctf2.getText(), ctf4.getText(), ctf5.getText());
+							ctf1.setText("");ctf2.setText("");ctf3.setText("");ctf4.setText("");ctf5.setText("");
+							File file = new File("Program_Files\\PersonData.txt");
+							Main.addObjectToFile(newCustomer,file);
+							Main.loadPersonDatabase();
+							cust = newCustomer;
+							CreateWindow.close();
+							CAccess = true;
+						}else {
+							newacc.setText("No fields can be left blank");
+						}
 						if (CAccess) {
 							stage.close();
 							CustomerWindow.show();
