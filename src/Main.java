@@ -253,6 +253,6 @@ public class Main {
 		} catch (IOException i) {
 			System.out.println("IO Exception");
 		}
-
+	loadPersonDatabase();
 	}
 }
