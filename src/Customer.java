@@ -14,9 +14,13 @@ public class Customer extends Person {
 		super(name, username, password, address, phoneNumber);
 		this.customerID = "C" + (Integer.parseInt(lastID) + 1);
 	}
-	
+
 	public String getCustomerID() {
 		return customerID;
+	}
+
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
 	}
 
 	@Override

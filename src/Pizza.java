@@ -9,15 +9,24 @@ public class Pizza {
 
 	// Default Constructor
 	public Pizza() {
-		pizzaToppings = new ArrayList<String>();
+		this.pizzaNumber = 0;
+		this.pizzaToppings = new ArrayList<String>();
+		this.totalPrice = 0;
 	}
-
+	
+	// Constructor w/ Parameters
+	public Pizza(int pizzaNumber, List<String> pizzaToppings) {
+		this.pizzaNumber = pizzaNumber;
+		this.pizzaToppings = pizzaToppings;
+		this.totalPrice = calculateTotalPrice(pizzaToppings);
+	}
+	
 	public double getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(double totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setTotalPrice(List<String> pizzaToppings) {
+		this.totalPrice = calculateTotalPrice(pizzaToppings);
 	}
 
 	public int getPizzaNumber() {
@@ -28,21 +37,20 @@ public class Pizza {
 		this.pizzaNumber = pizzaNumber;
 	}
 
-	// Constructor w/ all parameters except toping list
-	public Pizza(int pizzaNumber, List<String> pizzaToppings) {
-		this.pizzaNumber = pizzaNumber;
+	public List<String> getPizzaToppings() {
+		return pizzaToppings;
+	}
+
+	public void setPizzaToppings(List<String> pizzaToppings) {
 		this.pizzaToppings = pizzaToppings;
-		this.totalPrice = calculateTotalPrice(pizzaToppings);
 	}
 
-	public void addTopping(String topping) {
-		this.pizzaToppings.add(topping);
-	}
-
-	public void addListOfToppings(List<String> toppings) {
-		this.pizzaToppings.addAll(toppings);
-	}
-	
+	/**
+	 * Calculates the total cost of a Pizza based on the number of toppings in the pizzaToppings List.
+	 * The base price is $10, Cheese is free, and every other topping adds $0.50 to the cost. 
+	 * @param newPizzaToppings - The List of pizzaToppings to be accounted for.
+	 * @return The total cost of a pizza in dollars
+	 */
 	public double calculateTotalPrice(List<String> newPizzaToppings) {
 		//Base price of $10
 		double pizzaPrice = 10;

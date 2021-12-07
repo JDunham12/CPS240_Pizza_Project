@@ -2,7 +2,7 @@
 public class Employee extends Person {
 
 	private String employeeID;
-	private String position; // Arraylist of positions?
+	private String position; 
 	private boolean isFullTime;
 	private double wage;
 	private double yearToDateHours;
@@ -16,6 +16,7 @@ public class Employee extends Person {
 		this.yearToDateHours = 0.0;
 		this.isFullTime = true;
 	}
+	
 	// Constructor w/ Parameters
 		public Employee(String lastID, String name, String username, String password, String address, String phoneNumber,
 				String position, double wage, boolean isFullTime) {
@@ -26,6 +27,7 @@ public class Employee extends Person {
 			this.isFullTime = isFullTime;
 			this.employeeID = "E" + (Integer.parseInt(lastID) + 1);
 		}
+		
 	// Constructor w/ Parameters
 	public Employee(String lastID, String name, String username, String password, String address, String phoneNumber,
 			String position, double wage, double yearToDateHours, boolean isFullTime) {
@@ -36,20 +38,45 @@ public class Employee extends Person {
 		this.isFullTime = isFullTime;
 		this.employeeID = "E" + (Integer.parseInt(lastID) + 1);
 	}
-	public String getEmployeeID(){
+
+	public String getEmployeeID() {
 		return employeeID;
 	}
-	public String getPosition(){
+
+	public void setEmployeeID(String employeeID) {
+		this.employeeID = employeeID;
+	}
+
+	public String getPosition() {
 		return position;
 	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public boolean getIsFullTime() {
 		return isFullTime;
 	}
+
+	public void setFullTime(boolean isFullTime) {
+		this.isFullTime = isFullTime;
+	}
+
 	public double getWage() {
 		return wage;
 	}
+
+	public void setWage(double wage) {
+		this.wage = wage;
+	}
+
 	public double getYearToDateHours() {
 		return yearToDateHours;
+	}
+
+	public void setYearToDateHours(double yearToDateHours) {
+		this.yearToDateHours = yearToDateHours;
 	}
 
 	@Override

@@ -569,11 +569,11 @@ public class GUI extends Application {
 							if(userID.charAt(0) == 'C') {
 								CAccess = true;
 								cust = (Customer) Main.personDatabase.get(userID);
-								System.out.println("cust assigned");
+								//System.out.println("cust assigned");
 							}else if (userID.charAt(0) == 'E') {
 								EAccess = true;
 								emp = (Employee) Main.personDatabase.get(userID);
-								System.out.println("emp assigned");
+								//System.out.println("emp assigned");
 							}
 						}
 					
@@ -657,11 +657,11 @@ public class GUI extends Application {
 							Font font = new Font(30);
 							Label punches = new Label();
 							//System.out.println(Main.punchDatabase);
-							System.out.println(Main.punchDatabase.get(0).get(0));
+							//System.out.println(Main.punchDatabase.get(0).get(0));
 							for(List<String> l: Main.punchDatabase) {
 								for(String s: l) {
 									//temp += s;
-									System.out.println(s);
+									//System.out.println(s);
 									punches.setText(punches.getText() + s + " ");
 								}
 								punches.setText(punches.getText() + "\n");

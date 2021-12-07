@@ -102,7 +102,7 @@ public class Main {
 
 				personDatabase.put(cust.getCustomerID(), cust); // adds to map with CustomerID as key, and customer
 																// object as value
-				System.out.println("added customer from file to map"); // used to indicate that addition succeeds
+				//System.out.println("added customer from file to map"); // used to indicate that addition succeeds
 			} else if (ln[0].charAt(0) == 'E') { // determines if line in persondata.txt is an employee by number of
 				empFound = true;						// elements
 				Employee emp = null;
@@ -125,7 +125,7 @@ public class Main {
 					personDatabase.put(emp.getEmployeeID(), emp); // adds to map with EmployeeID as key, and employee
 																	// object as value
 				}
-				System.out.println("added employee from file to map"); // test to show successful addition
+				//System.out.println("added employee from file to map"); // test to show successful addition
 			} else {
 				System.out.println("Data length of " + ln.length + " in line " + pageLineCounter
 						+ " is invalid for customer or employee."); // if ln.length doesn't match options
@@ -158,7 +158,7 @@ public class Main {
 				//System.out.println(ln[i]);
 				punchLine.add(ln[i]);
 			}
-			System.out.println(punchLine);
+			//System.out.println(punchLine);
 			punchDatabase.add(punchLine);
 		}
 		if(input != null) {
@@ -188,7 +188,7 @@ public class Main {
 				if (p.equals(personDatabase.get(s).getPassword())) {
 					return s;
 				} else {
-					System.out.println("wrong password");
+					//System.out.println("wrong password");
 				}
 			}
 		}

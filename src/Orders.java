@@ -39,10 +39,6 @@ public class Orders {
 	 */
 	static public void addCompleteOrder(Pair<Integer,String> customerPair, List<Pizza> pizzaList) {		
 		orderMap.put(customerPair, pizzaList);
-		
-		for(Map.Entry<Pair<Integer,String>, List<Pizza>> order: orderMap.entrySet()) {
-			System.out.println(order);
-		}
 	}
 
 	/**
